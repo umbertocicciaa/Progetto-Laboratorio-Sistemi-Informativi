@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+  <persistence-unit name="default">
+    <class>data.Bene</class>
+    <class>data.Fattura</class>
+    <class>data.Automezzo</class>
+    <class>data.ListaFermate</class>
+    <class>data.Autobus</class>
+    <class>data.RichiestaCliente</class>
+    <class>data.RequisitiMinimiDiCandidatura</class>
+    <class>data.Conto</class>
+    <class>data.Corsa</class>
+    <class>data.TransazioneFinanziaria</class>
+    <class>data.Ordine</class>
+    <class>data.Dipendente</class>
+    <class>data.Turno</class>
+    <class>data.Dipartimento</class>
+    <class>data.Prodotto</class>
+    <class>data.Libro</class>
+    <class>data.Fermata</class>
+    <class>data.Ruolo</class>
+    <class>data.Cliente</class>
+    <class>data.Fornitore</class>
+    <class>data.Preventivo</class>
+    <properties>
+      <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/laboratoriosistemiinformativi"/>
+      <property name="toplink.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="toplink.jdbc.user" value="umbertodomenicociccia"/>
+      <property name="toplink.jdbc.password" value="interxxx123"/>
+      <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/laboratoriosistemiinformativi"/>
+      <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="hibernate.connection.username" value="umbertodomenicociccia"/>
+      <property name="hibernate.connection.password" value="interxxx123"/>
+      <property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/laboratoriosistemiinformativi"/>
+      <property name="openjpa.ConnectionDriverName" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="openjpa.ConnectionUserName" value="umbertodomenicociccia"/>
+      <property name="openjpa.ConnectionPassword" value="interxxx123"/>
+      <property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost:3306/laboratoriosistemiinformativi"/>
+      <property name="eclipselink.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="eclipselink.jdbc.user" value="umbertodomenicociccia"/>
+      <property name="eclipselink.jdbc.password" value="interxxx123"/>
+    </properties>
+  </persistence-unit>
+</persistence>
