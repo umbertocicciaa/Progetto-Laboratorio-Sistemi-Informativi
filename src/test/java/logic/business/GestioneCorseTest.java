@@ -285,7 +285,28 @@ public class GestioneCorseTest {
         gestioneCorse.removeFermata(via, citta);
         gestioneCorse.removeCorsa(idCorsa, autobus);
         gestioneCorse.removeAutobus(autobus);
+    }
 
+    @Test
+    public void testCorseArrivonoStazione(){
+        int idCorsa = 1;
+        Date data = new Date();
+        String via = "SalvatoreFurfaro", citta = "locri", autobus = "AA2024", localitaPartenza = "locri", localitaArrivo = "rende";
+        Time orarioArrivo = new Time(15, 10, 0);
+
+        gestioneCorse.addAutobus(autobus);
+        gestioneCorse.addCorsa(idCorsa, data, autobus);
+        gestioneCorse.addFermata(via, citta);
+        gestioneCorse.addListaFermate(idCorsa, autobus, via, citta, orarioArrivo, localitaPartenza, localitaArrivo);
+
+        ListaFermate fermata = gestioneCorse.getListaFermate(idCorsa, autobus, via, citta);
+        List<ListaFermate> risultato = gestioneCorse.corseArrivonoStazione(localitaArrivo);
+        Assertions.assertEquals(risultato.get(0), fermata.getCorsa());
+
+        gestioneCorse.removeListaFermate(idCorsa, autobus, via, citta);
+        gestioneCorse.removeFermata(via, citta);
+        gestioneCorse.removeCorsa(idCorsa, autobus);
+        gestioneCorse.removeAutobus(autobus);
     }
 
 }

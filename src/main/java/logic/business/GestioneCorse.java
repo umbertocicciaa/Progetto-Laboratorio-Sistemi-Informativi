@@ -229,4 +229,18 @@ public interface GestioneCorse {
         return corse;
     }
 
+    default List<ListaFermate> corseArrivonoStazione(@NotNull String stazione) {
+        List<ListaFermate> corse = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<ListaFermate> query = session.createQuery("SELECT f.corsa FROM ListaFermate f where f.localitaArrivo=:stazione", ListaFermate.class);
+            query.setParameter("stazione", stazione);
+            corse.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return corse;
+    }
+
 }
