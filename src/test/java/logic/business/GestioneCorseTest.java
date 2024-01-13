@@ -1,7 +1,8 @@
+package logic.business;
+
 import data.*;
 import jakarta.persistence.NoResultException;
 import logic.HibernateFactory;
-import logic.business.GestioneCorse;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
