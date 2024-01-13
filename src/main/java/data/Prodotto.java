@@ -51,6 +51,12 @@ public class Prodotto implements Serializable {
     public Prodotto() {
     }
 
+    public Prodotto(Integer codProdotto, String tipo, Integer quantitaNecessaria) {
+        this.codProdotto = codProdotto;
+        this.tipo = tipo;
+        this.quantitaNecessaria = quantitaNecessaria;
+    }
+
     public Prodotto(Integer codProdotto) {
         this.codProdotto = codProdotto;
     }
