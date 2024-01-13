@@ -1,8 +1,6 @@
 package logic.business;
 
-import data.Automezzo;
-import data.Fornitore;
-import data.Prodotto;
+import data.*;
 import logic.HibernateFactory;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -11,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author umbertodomenicociccia
@@ -88,7 +87,7 @@ public class GestioneAcquistiTest {
         String assicurazione = "Unipol";
         BigDecimal prezzo = new BigDecimal("20.5");
 
-        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione,prezzo);
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
         Automezzo automezzo = gestioneAcquisti.getAutomezzo(targa);
         Assertions.assertEquals(automezzo.getTarga(), targa);
         gestioneAcquisti.removeAutomezzo(targa);
@@ -101,7 +100,7 @@ public class GestioneAcquistiTest {
         String assicurazione = "Unipol";
         BigDecimal prezzo = new BigDecimal("20.5");
 
-        gestioneAcquisti.addAutomezzo(targa,marca,assicurazione,prezzo);
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
         gestioneAcquisti.removeAutomezzo(targa);
         Assertions.assertNull(gestioneAcquisti.getAutomezzo(targa));
     }
@@ -113,7 +112,7 @@ public class GestioneAcquistiTest {
         String assicurazione = "Unipol";
         BigDecimal prezzo = new BigDecimal("20.5");
 
-        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione,prezzo);
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
         Automezzo automezzo = gestioneAcquisti.getAutomezzo(targa);
         Assertions.assertEquals(automezzo.getTarga(), targa);
         gestioneAcquisti.removeAutomezzo(targa);
@@ -125,9 +124,9 @@ public class GestioneAcquistiTest {
         String marca = "alpha";
         String assicurazione = "Unipol";
         BigDecimal prezzo = new BigDecimal("20.5");
-        String nuova="ciccio";
-        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione,prezzo);
-        gestioneAcquisti.updateAutomezzo(targa,nuova,null,null);
+        String nuova = "ciccio";
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
+        gestioneAcquisti.updateAutomezzo(targa, nuova, null, null);
         Automezzo automezzo = gestioneAcquisti.getAutomezzo(targa);
         Assertions.assertEquals(automezzo.getMarca(), nuova);
         gestioneAcquisti.removeAutomezzo(targa);
@@ -179,6 +178,153 @@ public class GestioneAcquistiTest {
         Prodotto prodotto = gestioneAcquisti.getProdotto(codice);
         Assertions.assertEquals(prodotto.getTipo(), tipoNuovo);
         gestioneAcquisti.removeProdotto(codice);
+    }
+
+    @Test
+    public void testAddPreventivo() {
+        //prodotto
+        int codice = 1;
+        String tipo = "tipo";
+        int quantita = 10;
+
+        //fornitore
+        String piva = "F1";
+        String nome = "A";
+        String citta = "Locri";
+
+        //automezzo
+        String targa = "ABCDEFG1111";
+        String marca = "alpha";
+        String assicurazione = "Unipol";
+        BigDecimal prezzo = new BigDecimal("20.5");
+
+        //preventivo
+        BigDecimal costo = new BigDecimal("10.2");
+        Date scadenza = new Date(2002, 2, 2), scrittura = new Date(2002, 2, 3);
+
+        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        gestioneAcquisti.addFornitore(piva, nome, citta);
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
+        gestioneAcquisti.addPreventivo(piva, codice, targa, costo, scadenza, scrittura);
+
+        Preventivo preventivo = gestioneAcquisti.getPreventivo(piva, codice, targa);
+        Assertions.assertEquals(preventivo.getPreventivoPK(), new PreventivoPK(piva, codice, targa));
+
+        gestioneAcquisti.removePreventivo(piva, codice, targa);
+        gestioneAcquisti.removeAutomezzo(targa);
+        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.removeFornitore(piva);
+
+    }
+
+    @Test
+    public void testGetPreventivo() {
+        //prodotto
+        int codice = 1;
+        String tipo = "tipo";
+        int quantita = 10;
+
+        //fornitore
+        String piva = "F1";
+        String nome = "A";
+        String citta = "Locri";
+
+        //automezzo
+        String targa = "ABCDEFG1111";
+        String marca = "alpha";
+        String assicurazione = "Unipol";
+        BigDecimal prezzo = new BigDecimal("20.5");
+
+        //preventivo
+        BigDecimal costo = new BigDecimal("10.2");
+        Date scadenza = new Date(2002, 2, 2), scrittura = new Date(2002, 2, 3);
+
+        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        gestioneAcquisti.addFornitore(piva, nome, citta);
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
+        gestioneAcquisti.addPreventivo(piva, codice, targa, costo, scadenza, scrittura);
+
+        Preventivo preventivo = gestioneAcquisti.getPreventivo(piva, codice, targa);
+        Assertions.assertEquals(preventivo.getPreventivoPK(), new PreventivoPK(piva, codice, targa));
+
+        gestioneAcquisti.removePreventivo(piva, codice, targa);
+        gestioneAcquisti.removeAutomezzo(targa);
+        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.removeFornitore(piva);
+
+    }
+
+    @Test
+    public void testRemovePreventivo() {
+        //prodotto
+        int codice = 1;
+        String tipo = "tipo";
+        int quantita = 10;
+
+        //fornitore
+        String piva = "F1";
+        String nome = "A";
+        String citta = "Locri";
+
+        //automezzo
+        String targa = "ABCDEFG1111";
+        String marca = "alpha";
+        String assicurazione = "Unipol";
+        BigDecimal prezzo = new BigDecimal("20.5");
+
+        //preventivo
+        BigDecimal costo = new BigDecimal("10.2");
+        Date scadenza = new Date(2002, 2, 2), scrittura = new Date(2002, 2, 3);
+
+        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        gestioneAcquisti.addFornitore(piva, nome, citta);
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
+        gestioneAcquisti.addPreventivo(piva, codice, targa, costo, scadenza, scrittura);
+
+        gestioneAcquisti.removePreventivo(piva, codice, targa);
+        Assertions.assertNull(gestioneAcquisti.getPreventivo(piva, codice, targa));
+        gestioneAcquisti.removeAutomezzo(targa);
+        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.removeFornitore(piva);
+
+    }
+
+    @Test
+    public void testUpdatePreventivo() {
+        //prodotto
+        int codice = 1;
+        String tipo = "tipo";
+        int quantita = 10;
+
+        //fornitore
+        String piva = "F1";
+        String nome = "A";
+        String citta = "Locri";
+
+        //automezzo
+        String targa = "ABCDEFG1111";
+        String marca = "alpha";
+        String assicurazione = "Unipol";
+        BigDecimal prezzo = new BigDecimal("20.5");
+
+        //preventivo
+        BigDecimal costo = new BigDecimal("10.2"), nuovoCosto = new BigDecimal("10.90");
+        Date scadenza = new Date(2002, 2, 2), scrittura = new Date(2002, 2, 3);
+
+        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        gestioneAcquisti.addFornitore(piva, nome, citta);
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
+        gestioneAcquisti.addPreventivo(piva, codice, targa, costo, scadenza, scrittura);
+
+        gestioneAcquisti.updatePreventivo(piva, codice, targa, nuovoCosto, null, null);
+        Preventivo preventivo = gestioneAcquisti.getPreventivo(piva, codice, targa);
+        Assertions.assertEquals(preventivo.getPrezzo(), nuovoCosto);
+
+        gestioneAcquisti.removePreventivo(piva, codice, targa);
+        gestioneAcquisti.removeAutomezzo(targa);
+        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.removeFornitore(piva);
+
     }
 
 }

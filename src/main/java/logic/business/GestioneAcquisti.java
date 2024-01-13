@@ -1,8 +1,6 @@
 package logic.business;
 
-import data.Automezzo;
-import data.Fornitore;
-import data.Prodotto;
+import data.*;
 import logic.HibernateFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -10,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author umbertodomenicociccia
@@ -162,5 +161,56 @@ public interface GestioneAcquisti {
             exception.printStackTrace();
         }
     }
+
+    default void addPreventivo(@NotNull String piva, int prodotto, @NotNull String automezzo, @NotNull BigDecimal prezzo, @NotNull Date scadenza, @NotNull Date scrittura) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.persist(new Preventivo(new PreventivoPK(piva, prodotto, automezzo), prezzo, scadenza, scrittura));
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    default void removePreventivo(@NotNull String piva, int prodotto, @NotNull String automezzo) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Preventivo preventivo = session.get(Preventivo.class, new PreventivoPK(piva, prodotto, automezzo));
+            session.delete(preventivo);
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    default void updatePreventivo(@NotNull String piva, int prodotto, @NotNull String automezzo, BigDecimal prezzo, Date scadenza, Date scrittura) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Preventivo preventivo = session.get(Preventivo.class, new PreventivoPK(piva, prodotto, automezzo));
+            if (prezzo != null)
+                preventivo.setPrezzo(prezzo);
+            if (scadenza != null)
+                preventivo.setDataScadenza(scadenza);
+            if (scrittura != null)
+                preventivo.setDataScrittura(scrittura);
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    default Preventivo getPreventivo(@NotNull String piva, int prodotto, @NotNull String automezzo) {
+        Preventivo preventivo = null;
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            preventivo = session.get(Preventivo.class, new PreventivoPK(piva, prodotto, automezzo));
+            session.getTransaction().commit();
+            return preventivo;
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+            return preventivo;
+        }
+    }
+
 
 }
