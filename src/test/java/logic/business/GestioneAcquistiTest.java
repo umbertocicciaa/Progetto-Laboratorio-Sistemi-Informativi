@@ -1,6 +1,7 @@
 package logic.business;
 
 import data.Fornitore;
+import data.Prodotto;
 import logic.HibernateFactory;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -75,6 +76,54 @@ public class GestioneAcquistiTest {
         Fornitore fornitore = gestioneAcquisti.getFornitore(piva);
         Assertions.assertEquals(fornitore.getNome(), nuovoNome);
         gestioneAcquisti.removeFornitore(piva);
+    }
+
+    @Test
+    public void testAddProdotto() {
+        int codice = 1;
+        String tipo = "tipo";
+        int quantita = 10;
+
+        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        Prodotto prodotto = gestioneAcquisti.getProdotto(codice);
+        Assertions.assertEquals(prodotto.getCodProdotto(), codice);
+        gestioneAcquisti.removeProdotto(codice);
+    }
+
+    @Test
+    public void testRemoveProdotto() {
+        int codice = 1;
+        String tipo = "tipo";
+        int quantita = 10;
+
+        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        gestioneAcquisti.removeProdotto(codice);
+        Assertions.assertNull(gestioneAcquisti.getProdotto(codice));
+    }
+
+    @Test
+    public void testGetProdotto() {
+        int codice = 1;
+        String tipo = "tipo";
+        int quantita = 10;
+
+        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        Prodotto prodotto = gestioneAcquisti.getProdotto(codice);
+        Assertions.assertEquals(prodotto.getCodProdotto(), codice);
+        gestioneAcquisti.removeProdotto(codice);
+    }
+
+    @Test
+    public void testUpdateProdotto() {
+        int codice = 1;
+        String tipo = "tipo";
+        int quantita = 10;
+        String tipoNuovo = "ciao";
+        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        gestioneAcquisti.updateProdotto(codice, tipoNuovo, null);
+        Prodotto prodotto = gestioneAcquisti.getProdotto(codice);
+        Assertions.assertEquals(prodotto.getTipo(), tipoNuovo);
+        gestioneAcquisti.removeProdotto(codice);
     }
 
 }

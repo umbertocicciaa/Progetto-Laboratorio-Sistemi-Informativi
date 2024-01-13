@@ -48,14 +48,62 @@ public interface GestioneAcquisti {
         }
     }
 
-    default void updateFornitore(@NotNull String piva, String nome, String citta){
+    default void updateFornitore(@NotNull String piva, String nome, String citta) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Fornitore fornitore = session.get(Fornitore.class, piva);
-            if(nome!=null)
+            if (nome != null)
                 fornitore.setNome(nome);
-            if(citta!=null)
+            if (citta != null)
                 fornitore.setCitta(citta);
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    default void addProdotto(int codice, @NotNull String tipo, int quantitaNecessaria) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.persist(new Prodotto(codice, tipo, quantitaNecessaria));
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    default void removeProdotto(int codice) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Prodotto prodotto = session.get(Prodotto.class, codice);
+            session.delete(prodotto);
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    default Prodotto getProdotto(int codice) {
+        Prodotto prodotto = null;
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            prodotto = session.get(Prodotto.class, codice);
+            session.getTransaction().commit();
+            return prodotto;
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+            return prodotto;
+        }
+    }
+
+    default void updateProdotto(int codice, String tipo, Integer quantita) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Prodotto prodotto = session.get(Prodotto.class, codice);
+            if (tipo != null)
+                prodotto.setTipo(tipo);
+            if (quantita != null)
+                prodotto.setQuantitaNecessaria(quantita);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
