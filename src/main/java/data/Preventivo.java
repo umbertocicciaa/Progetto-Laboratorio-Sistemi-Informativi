@@ -67,6 +67,13 @@ public class Preventivo implements Serializable {
         this.preventivoPK = new PreventivoPK(pIVAFornitore, prodottoDaOrdinare, automezzoDaOrdinare);
     }
 
+    public Preventivo(PreventivoPK preventivoPK, BigDecimal prezzo, Date dataScadenza, Date dataScrittura) {
+        this.preventivoPK = preventivoPK;
+        this.prezzo = prezzo;
+        this.dataScadenza = dataScadenza;
+        this.dataScrittura = dataScrittura;
+    }
+
     public PreventivoPK getPreventivoPK() {
         return preventivoPK;
     }
