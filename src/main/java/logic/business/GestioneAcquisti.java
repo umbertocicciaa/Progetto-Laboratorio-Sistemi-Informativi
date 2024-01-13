@@ -1,6 +1,7 @@
 package logic.business;
 
 import data.Fornitore;
+import data.Prodotto;
 import logic.HibernateFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -45,7 +46,20 @@ public interface GestioneAcquisti {
             exception.printStackTrace();
             return fornitore;
         }
+    }
 
+    default void updateFornitore(@NotNull String piva, String nome, String citta){
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Fornitore fornitore = session.get(Fornitore.class, piva);
+            if(nome!=null)
+                fornitore.setNome(nome);
+            if(citta!=null)
+                fornitore.setCitta(citta);
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
     }
 
 }

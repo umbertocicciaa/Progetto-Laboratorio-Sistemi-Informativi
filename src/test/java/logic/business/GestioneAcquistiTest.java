@@ -64,4 +64,17 @@ public class GestioneAcquistiTest {
         gestioneAcquisti.removeFornitore(piva);
     }
 
+    @Test
+    public void testUpdateFornitore() {
+        String piva = "F1";
+        String nome = "A";
+        String citta = "Locri";
+        String nuovoNome = "pippo";
+        gestioneAcquisti.addFornitore(piva, nome, citta);
+        gestioneAcquisti.updateFornitore(piva, nuovoNome, null);
+        Fornitore fornitore = gestioneAcquisti.getFornitore(piva);
+        Assertions.assertEquals(fornitore.getNome(), nuovoNome);
+        gestioneAcquisti.removeFornitore(piva);
+    }
+
 }
