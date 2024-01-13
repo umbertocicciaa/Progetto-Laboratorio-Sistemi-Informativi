@@ -9,7 +9,9 @@ import org.hibernate.query.Query;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author umbertodomenicociccia
@@ -197,6 +199,20 @@ public interface GestioneCorse {
         } catch (HibernateException e) {
             e.printStackTrace();
         }
+    }
+
+    default List<ListaFermate> corseArrivonoOrario(Time ora) {
+        List<ListaFermate> corse = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<ListaFermate> query = session.createQuery("SELECT f.corsa FROM ListaFermate f WHERE  f.orarioArrivo=:ora", ListaFermate.class);
+            query.setParameter("ora", ora);
+            corse.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return corse;
     }
 
 }

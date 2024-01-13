@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author umbertodomenicociccia
@@ -187,7 +188,7 @@ public class GestioneCorseTest {
 
 
         gestioneCorse.removeListaFermate(idCorsa, autobus, via, citta);
-        Assertions.assertNull(gestioneCorse.getListaFermate(idCorsa,autobus,via,citta));
+        Assertions.assertNull(gestioneCorse.getListaFermate(idCorsa, autobus, via, citta));
         gestioneCorse.removeFermata(via, citta);
         gestioneCorse.removeCorsa(idCorsa, autobus);
         gestioneCorse.removeAutobus(autobus);
@@ -206,14 +207,14 @@ public class GestioneCorseTest {
         gestioneCorse.addFermata(via, citta);
         gestioneCorse.addListaFermate(idCorsa, autobus, via, citta, orarioArrivo, localitaPartenza, localitaArrivo);
 
-        Time orarioNuovo=new Time(15,15,16);
-        String nuovoArrivo="catanzaro";
-        gestioneCorse.updateListaFermate(idCorsa,autobus,via,citta,orarioNuovo,null,nuovoArrivo);
+        Time orarioNuovo = new Time(15, 15, 16);
+        String nuovoArrivo = "catanzaro";
+        gestioneCorse.updateListaFermate(idCorsa, autobus, via, citta, orarioNuovo, null, nuovoArrivo);
 
         ListaFermate fermata = gestioneCorse.getListaFermate(idCorsa, autobus, via, citta);
         Assertions.assertEquals(fermata.getListaFermatePK(), new ListaFermatePK(idCorsa, autobus, via, citta));
-        Assertions.assertEquals(fermata.getLocalitaArrivo(),nuovoArrivo);
-        Assertions.assertEquals(fermata.getOrarioArrivo(),orarioNuovo);
+        Assertions.assertEquals(fermata.getLocalitaArrivo(), nuovoArrivo);
+        Assertions.assertEquals(fermata.getOrarioArrivo(), orarioNuovo);
 
         gestioneCorse.removeListaFermate(idCorsa, autobus, via, citta);
         gestioneCorse.removeFermata(via, citta);
@@ -235,6 +236,28 @@ public class GestioneCorseTest {
 
         ListaFermate fermata = gestioneCorse.getListaFermate(idCorsa, autobus, via, citta);
         Assertions.assertEquals(fermata.getListaFermatePK(), new ListaFermatePK(idCorsa, autobus, via, citta));
+
+        gestioneCorse.removeListaFermate(idCorsa, autobus, via, citta);
+        gestioneCorse.removeFermata(via, citta);
+        gestioneCorse.removeCorsa(idCorsa, autobus);
+        gestioneCorse.removeAutobus(autobus);
+    }
+
+    @Test
+    public void testCorseArrivonoOrario() {
+        int idCorsa = 1;
+        Date data = new Date();
+        String via = "SalvatoreFurfaro", citta = "locri", autobus = "AA2024", localitaPartenza = "locri", localitaArrivo = "rende";
+        Time orarioArrivo = new Time(15, 10, 0);
+
+        gestioneCorse.addAutobus(autobus);
+        gestioneCorse.addCorsa(idCorsa, data, autobus);
+        gestioneCorse.addFermata(via, citta);
+        gestioneCorse.addListaFermate(idCorsa, autobus, via, citta, orarioArrivo, localitaPartenza, localitaArrivo);
+
+        ListaFermate fermata = gestioneCorse.getListaFermate(idCorsa, autobus, via, citta);
+        List<ListaFermate> risultato = gestioneCorse.corseArrivonoOrario(orarioArrivo);
+        Assertions.assertEquals(risultato.get(0), fermata.getCorsa());
 
         gestioneCorse.removeListaFermate(idCorsa, autobus, via, citta);
         gestioneCorse.removeFermata(via, citta);
