@@ -4,7 +4,7 @@ target/
 !**/src/test/**/target/
 
 ### Resources ###
-src/main/resources/hibernate.cfg.xml
+**/src/main/resources/hibernate.cfg.xml
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
