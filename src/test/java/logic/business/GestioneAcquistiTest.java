@@ -327,4 +327,91 @@ public class GestioneAcquistiTest {
 
     }
 
+    @Test
+    public void testAddOrdine() {
+        //automezzo
+        String targa = "ABCDEFG1111";
+        String marca = "alpha";
+        String assicurazione = "Unipol";
+        BigDecimal prezzo = new BigDecimal("20.5");
+
+        //Ordine
+        int ordine = 1;
+        String stato = "consegna";
+        Date date = new Date();
+        int quantitaOrdine = 10;
+
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
+        gestioneAcquisti.addOrdine(ordine, stato, date, quantitaOrdine, -1, targa);
+        Ordine ord = gestioneAcquisti.getOrdine(ordine);
+        Assertions.assertEquals(ord.getNumero(), ordine);
+        gestioneAcquisti.removeOrdine(ordine);
+        gestioneAcquisti.removeAutomezzo(targa);
+    }
+
+    @Test
+    public void testRemoveOrdine() {
+        //automezzo
+        String targa = "ABCDEFG1111";
+        String marca = "alpha";
+        String assicurazione = "Unipol";
+        BigDecimal prezzo = new BigDecimal("20.5");
+
+        //Ordine
+        int ordine = 1;
+        String stato = "consegna";
+        Date date = new Date();
+        int quantitaOrdine = 10;
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
+        gestioneAcquisti.addOrdine(ordine, stato, date, quantitaOrdine, -1, targa);
+        gestioneAcquisti.removeOrdine(ordine);
+        Assertions.assertNull(gestioneAcquisti.getOrdine(ordine));
+        gestioneAcquisti.removeAutomezzo(targa);
+    }
+
+    @Test
+    public void testGetOrdine() {
+        //automezzo
+        String targa = "ABCDEFG1111";
+        String marca = "alpha";
+        String assicurazione = "Unipol";
+        BigDecimal prezzo = new BigDecimal("20.5");
+
+        //Ordine
+        int ordine = 1;
+        String stato = "consegna";
+        Date date = new Date();
+        int quantitaOrdine = 10;
+
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
+        gestioneAcquisti.addOrdine(ordine, stato, date, quantitaOrdine, -1, targa);
+        Ordine ord = gestioneAcquisti.getOrdine(ordine);
+        Assertions.assertEquals(ord.getNumero(), ordine);
+        gestioneAcquisti.removeOrdine(ordine);
+        gestioneAcquisti.removeAutomezzo(targa);
+    }
+
+    @Test
+    public void testUpdateOrdine() {
+        //automezzo
+        String targa = "ABCDEFG1111";
+        String marca = "alpha";
+        String assicurazione = "Unipol";
+        BigDecimal prezzo = new BigDecimal("20.5");
+
+        //Ordine
+        int ordine = 1;
+        String stato = "consegna";
+        Date date = new Date();
+        int quantitaOrdine = 10, nuova = 12;
+
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
+        gestioneAcquisti.addOrdine(ordine, stato, date, quantitaOrdine, -1, targa);
+        gestioneAcquisti.updateOrdine(ordine, stato, date, nuova);
+        Ordine ord = gestioneAcquisti.getOrdine(ordine);
+        Assertions.assertEquals(ord.getQuantita(), nuova);
+        gestioneAcquisti.removeOrdine(ordine);
+        gestioneAcquisti.removeAutomezzo(targa);
+    }
+
 }

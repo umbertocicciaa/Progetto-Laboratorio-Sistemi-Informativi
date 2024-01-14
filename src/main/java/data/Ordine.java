@@ -58,6 +58,15 @@ public class Ordine implements Serializable {
         this.numero = numero;
     }
 
+    public Ordine(Integer numero, String stato, Date data, Integer quantita, Automezzo automezzoDaOrdinare, Prodotto prodottoDaOrdinare) {
+        this.numero = numero;
+        this.stato = stato;
+        this.data = data;
+        this.quantita = quantita;
+        this.automezzoDaOrdinare = automezzoDaOrdinare;
+        this.prodottoDaOrdinare = prodottoDaOrdinare;
+    }
+
     public Integer getNumero() {
         return numero;
     }

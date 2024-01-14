@@ -212,5 +212,60 @@ public interface GestioneAcquisti {
         }
     }
 
+    default void addOrdine(int codice, @NotNull String stato, @NotNull Date data, int quantita, int prodotto, String automezzo) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Ordine ordine = null;
+            if (automezzo == null)
+                ordine = new Ordine(codice, stato, data, quantita, null, session.get(Prodotto.class, prodotto));
+            else if (prodotto < 0) {
+                ordine = new Ordine(codice, stato, data, quantita, session.get(Automezzo.class, automezzo), null);
+            } else
+                ordine = new Ordine(codice, stato, data, quantita, session.get(Automezzo.class, automezzo), session.get(Prodotto.class, prodotto));
+            session.persist(ordine);
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    default Ordine getOrdine(int codice) {
+        Ordine ordine = null;
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            ordine = session.get(Ordine.class, codice);
+            session.getTransaction().commit();
+            return ordine;
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+            return ordine;
+        }
+    }
+
+    default void removeOrdine(int codice) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.delete(session.get(Ordine.class, codice));
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    default void updateOrdine(int codice, String stato, Date data, int quantita) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Ordine ordine = session.get(Ordine.class, codice);
+            if (stato != null)
+                ordine.setStato(stato);
+            if (data != null)
+                ordine.setData(data);
+            if (quantita > 0)
+                ordine.setQuantita(quantita);
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+    }
 
 }
