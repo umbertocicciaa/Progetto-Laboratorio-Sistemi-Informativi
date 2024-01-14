@@ -299,4 +299,18 @@ public interface GestioneAcquisti {
         return fornitori;
     }
 
+    default List<Fornitore> fornitoriDiUnNome(@NotNull String nome) {
+        List<Fornitore> fornitori = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Fornitore> query = session.createNamedQuery("Fornitore.findByNome", Fornitore.class);
+            query.setParameter("nome", nome);
+            fornitori.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return fornitori;
+    }
+
 }
