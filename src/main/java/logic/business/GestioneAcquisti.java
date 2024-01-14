@@ -285,4 +285,18 @@ public interface GestioneAcquisti {
         return fornitori;
     }
 
+    default List<Fornitore> fornitoriDiUnaPartitaIva(@NotNull String piva) {
+        List<Fornitore> fornitori = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Fornitore> query = session.createNamedQuery("Fornitore.findByPiva", Fornitore.class);
+            query.setParameter("piva", piva);
+            fornitori.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return fornitori;
+    }
+
 }

@@ -436,4 +436,20 @@ public class GestioneAcquistiTest {
         gestioneAcquisti.removeFornitore(piva2);
     }
 
+    @Test
+    public void testFornitoriDiUnaPartitaIva() {
+        String piva = "F1",piva2="F2";
+        String nome = "A",nome2="B";
+        String citta2="Cosenza";
+
+        gestioneAcquisti.addFornitore(piva, nome, citta2);
+        gestioneAcquisti.addFornitore(piva2, nome2, citta2);
+
+        List<Fornitore>fornitori=gestioneAcquisti.fornitoriDiUnaPartitaIva(piva);
+        Assertions.assertEquals(fornitori.get(0).getPiva(),piva);
+
+        gestioneAcquisti.removeFornitore(piva);
+        gestioneAcquisti.removeFornitore(piva2);
+    }
+
 }
