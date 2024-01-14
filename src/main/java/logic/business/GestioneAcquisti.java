@@ -5,10 +5,13 @@ import logic.HibernateFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author umbertodomenicociccia
@@ -266,6 +269,20 @@ public interface GestioneAcquisti {
         } catch (HibernateException exception) {
             exception.printStackTrace();
         }
+    }
+
+    default List<Fornitore> fornitoriDiUnaCitta(@NotNull String citta) {
+        List<Fornitore> fornitori = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Fornitore> query = session.createNamedQuery("Fornitore.findByCitta", Fornitore.class);
+            query.setParameter("citta", citta);
+            fornitori.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return fornitori;
     }
 
 }

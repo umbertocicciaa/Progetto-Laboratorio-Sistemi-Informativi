@@ -2,14 +2,19 @@ package logic.business;
 
 import data.*;
 import logic.HibernateFactory;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author umbertodomenicociccia
@@ -412,6 +417,23 @@ public class GestioneAcquistiTest {
         Assertions.assertEquals(ord.getQuantita(), nuova);
         gestioneAcquisti.removeOrdine(ordine);
         gestioneAcquisti.removeAutomezzo(targa);
+    }
+
+    @Test
+    public void testFornitoriDiUnaCitta() {
+        String piva = "F1",piva2="F2";
+        String nome = "A",nome2="B";
+        String citta2="Cosenza";
+
+        gestioneAcquisti.addFornitore(piva, nome, citta2);
+        gestioneAcquisti.addFornitore(piva2, nome2, citta2);
+
+        List<Fornitore>fornitori=gestioneAcquisti.fornitoriDiUnaCitta(citta2);
+        Assertions.assertEquals(fornitori.get(0).getPiva(),piva);
+        Assertions.assertEquals(fornitori.get(1).getPiva(),piva2);
+
+        gestioneAcquisti.removeFornitore(piva);
+        gestioneAcquisti.removeFornitore(piva2);
     }
 
 }
