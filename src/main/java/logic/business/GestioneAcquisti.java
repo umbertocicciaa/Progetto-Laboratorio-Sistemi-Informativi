@@ -313,4 +313,18 @@ public interface GestioneAcquisti {
         return fornitori;
     }
 
+    /*
+    * Filtra automezzo
+    * */
+
+    /*
+     * Filtra prodotti
+     * */
+
+    /*
+     * Filtra prodotto necessita maggiore
+     * */
+
+
+
 }
