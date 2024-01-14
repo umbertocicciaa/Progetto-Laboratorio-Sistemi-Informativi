@@ -5,6 +5,7 @@ target/
 
 ### Resources ###
 **/src/main/resources/hibernate.cfg.xml
+**/src/main/resources/META-INF/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
