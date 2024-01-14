@@ -313,18 +313,123 @@ public interface GestioneAcquisti {
         return fornitori;
     }
 
-    /*
-    * Filtra automezzo
-    * */
+    default List<Automezzo> automezziDiUnaTarga(@NotNull String targa) {
+        List<Automezzo> automezzo = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Automezzo> query = session.createNamedQuery("Automezzo.findByTarga", Automezzo.class);
+            query.setParameter("targa", targa);
+            automezzo.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return automezzo;
+    }
 
-    /*
-     * Filtra prodotti
-     * */
+    default List<Automezzo> automezziDiUnaMarca(@NotNull String marca) {
+        List<Automezzo> automezzo = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Automezzo> query = session.createNamedQuery("Automezzo.findByMarca", Automezzo.class);
+            query.setParameter("marca", marca);
+            automezzo.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return automezzo;
+    }
+
+    default List<Automezzo> automezziDiUnaAssicurazione(@NotNull String assicurazione) {
+        List<Automezzo> automezzo = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Automezzo> query = session.createNamedQuery("Automezzo.findByAssicurazione", Automezzo.class);
+            query.setParameter("assicurazione", assicurazione);
+            automezzo.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return automezzo;
+    }
+
+    default List<Automezzo> automezziDiUnPrezzo(@NotNull BigDecimal prezzo) {
+        List<Automezzo> automezzo = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Automezzo> query = session.createNamedQuery("Automezzo.findByPrezzo", Automezzo.class);
+            query.setParameter("prezzo", prezzo);
+            automezzo.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return automezzo;
+    }
+
+    default List<Prodotto> prodottiDiUnCodice(int codice) {
+        List<Prodotto> prodotti = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Prodotto> query = session.createNamedQuery("Prodotto.findByCodProdotto", Prodotto.class);
+            query.setParameter("codice", codice);
+            prodotti.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return prodotti;
+    }
+
+    default List<Prodotto> prodottiDiUnTipo(@NotNull String tipo) {
+        List<Prodotto> prodotti = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Prodotto> query = session.createNamedQuery("Prodotto.findByTipo", Prodotto.class);
+            query.setParameter("tipo", tipo);
+            prodotti.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return prodotti;
+    }
+
+    default List<Prodotto> prodottiDiUnaNecessita(int quantitaNecessaria) {
+        List<Prodotto> prodotti = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Prodotto> query = session.createNamedQuery("Prodotto.findByQuantitaNecessaria", Prodotto.class);
+            query.setParameter("quantitaNecessaria", quantitaNecessaria);
+            prodotti.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return prodotti;
+    }
+
+    default List<Prodotto> prodottoNecessitaMAggiore() {
+        List<Prodotto> prodotti = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Prodotto> query = session.createQuery(
+                    "FROM Prodotto p WHERE p.quantitaNecessaria = (SELECT max(p2.quantitaNecessaria) FROM Prodotto p2)",
+                    Prodotto.class
+            );
+            prodotti.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return prodotti;
+    }
 
     /*
      * Filtra prodotto necessita maggiore
      * */
-
 
 
 }

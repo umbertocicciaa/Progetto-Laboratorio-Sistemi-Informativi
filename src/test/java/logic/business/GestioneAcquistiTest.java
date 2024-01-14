@@ -421,16 +421,16 @@ public class GestioneAcquistiTest {
 
     @Test
     public void testFornitoriDiUnaCitta() {
-        String piva = "F1",piva2="F2";
-        String nome = "A",nome2="B";
-        String citta2="Cosenza";
+        String piva = "F1", piva2 = "F2";
+        String nome = "A", nome2 = "B";
+        String citta2 = "Cosenza";
 
         gestioneAcquisti.addFornitore(piva, nome, citta2);
         gestioneAcquisti.addFornitore(piva2, nome2, citta2);
 
-        List<Fornitore>fornitori=gestioneAcquisti.fornitoriDiUnaCitta(citta2);
-        Assertions.assertEquals(fornitori.get(0).getPiva(),piva);
-        Assertions.assertEquals(fornitori.get(1).getPiva(),piva2);
+        List<Fornitore> fornitori = gestioneAcquisti.fornitoriDiUnaCitta(citta2);
+        Assertions.assertEquals(fornitori.get(0).getPiva(), piva);
+        Assertions.assertEquals(fornitori.get(1).getPiva(), piva2);
 
         gestioneAcquisti.removeFornitore(piva);
         gestioneAcquisti.removeFornitore(piva2);
@@ -438,15 +438,15 @@ public class GestioneAcquistiTest {
 
     @Test
     public void testFornitoriDiUnaPartitaIva() {
-        String piva = "F1",piva2="F2";
-        String nome = "A",nome2="B";
-        String citta2="Cosenza";
+        String piva = "F1", piva2 = "F2";
+        String nome = "A", nome2 = "B";
+        String citta2 = "Cosenza";
 
         gestioneAcquisti.addFornitore(piva, nome, citta2);
         gestioneAcquisti.addFornitore(piva2, nome2, citta2);
 
-        List<Fornitore>fornitori=gestioneAcquisti.fornitoriDiUnaPartitaIva(piva);
-        Assertions.assertEquals(fornitori.get(0).getPiva(),piva);
+        List<Fornitore> fornitori = gestioneAcquisti.fornitoriDiUnaPartitaIva(piva);
+        Assertions.assertEquals(fornitori.get(0).getPiva(), piva);
 
         gestioneAcquisti.removeFornitore(piva);
         gestioneAcquisti.removeFornitore(piva2);
@@ -454,18 +454,56 @@ public class GestioneAcquistiTest {
 
     @Test
     public void testFornitoriDiUnNome() {
-        String piva = "F1",piva2="F2";
-        String nome = "A",nome2="A";
-        String citta2="Cosenza";
+        String piva = "F1", piva2 = "F2";
+        String nome = "A", nome2 = "A";
+        String citta2 = "Cosenza";
 
         gestioneAcquisti.addFornitore(piva, nome, citta2);
         gestioneAcquisti.addFornitore(piva2, nome2, citta2);
 
-        List<Fornitore>fornitori=gestioneAcquisti.fornitoriDiUnNome(nome);
-        Assertions.assertEquals(fornitori.get(0).getPiva(),piva);
-        Assertions.assertEquals(fornitori.get(1).getPiva(),piva2);
+        List<Fornitore> fornitori = gestioneAcquisti.fornitoriDiUnNome(nome);
+        Assertions.assertEquals(fornitori.get(0).getPiva(), piva);
+        Assertions.assertEquals(fornitori.get(1).getPiva(), piva2);
         gestioneAcquisti.removeFornitore(piva);
         gestioneAcquisti.removeFornitore(piva2);
+    }
+
+    @Test
+    public void testAutomezzoDiUnPrezzo() {
+        String targa = "ABCDEFG1111";
+        String marca = "alpha";
+        String assicurazione = "Unipol";
+        BigDecimal prezzo = new BigDecimal("20.50");
+
+        gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
+        List<Automezzo> automezzi = gestioneAcquisti.automezziDiUnPrezzo(prezzo);
+        Assertions.assertEquals(automezzi.get(0).getPrezzo(), prezzo);
+        gestioneAcquisti.removeAutomezzo(targa);
+    }
+
+    @Test
+    public void testProdottiNecessitaQuantitaMaggiore() {
+        int codice = 1;
+        String tipo = "tipo";
+        int quantita = 10;
+
+        int codice2 = 2;
+        String tipo2 = "tipo";
+        int quantita2 = 10;
+
+        int codice3 = 3;
+        String tipo3 = "tipo";
+        int quantita3 = 5;
+
+
+        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        gestioneAcquisti.addProdotto(codice2, tipo2, quantita2);
+        gestioneAcquisti.addProdotto(codice3, tipo3, quantita3);
+        List<Prodotto> prodotti = gestioneAcquisti.prodottoNecessitaMAggiore();
+        Assertions.assertEquals(prodotti.get(0).getQuantitaNecessaria(), quantita);
+        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.removeProdotto(codice2);
+        gestioneAcquisti.removeProdotto(codice3);
     }
 
 }
