@@ -1,7 +1,8 @@
+package logic.business;
+
 import data.Cliente;
 import data.RichiestaCliente;
 import logic.HibernateFactory;
-import logic.business.GestioneReclamo;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.*;
 

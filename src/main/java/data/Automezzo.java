@@ -58,6 +58,13 @@ public class Automezzo implements Serializable {
         this.targa = targa;
     }
 
+    public Automezzo(String targa, String marca, String assicurazione, BigDecimal prezzo) {
+        this.targa = targa;
+        this.marca = marca;
+        this.assicurazione = assicurazione;
+        this.prezzo = prezzo;
+    }
+
     public String getTarga() {
         return targa;
     }
