@@ -1,6 +1,7 @@
 package logic.business;
 
 import data.Cliente;
+import data.Ordine;
 import data.RichiestaCliente;
 import logic.HibernateFactory;
 import org.hibernate.HibernateException;
@@ -9,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -75,6 +77,19 @@ public interface GestioneReclamo {
         }
     }
 
+    default List<Cliente> getClienti() {
+        List<Cliente> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Cliente> query = session.createNamedQuery("Cliente.findAll", Cliente.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
     default void createRichiestaCliente(@NotNull Integer iDRichiesta,
                                         @NotNull String contenuto,
                                         @NotNull Date data,
@@ -128,6 +143,19 @@ public interface GestioneReclamo {
             e.printStackTrace();
             return null;
         }
+    }
+
+    default List<RichiestaCliente> getRichiesteClienti() {
+        List<RichiestaCliente> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<RichiestaCliente> query = session.createNamedQuery("RichiestaCliente.findAll", RichiestaCliente.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
     }
 
     default List<RichiestaCliente> reclamiRisolti() {
