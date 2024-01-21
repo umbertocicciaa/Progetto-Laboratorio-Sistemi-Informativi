@@ -52,6 +52,19 @@ public interface GestioneCorse {
         }
     }
 
+    default List<Corsa> getCorse() {
+        List<Corsa> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Corsa> query = session.createNamedQuery("Corsa.findAll", Corsa.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
     default Corsa getCorsa(int idCorsa, @NotNull String targaAutobus) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -99,6 +112,19 @@ public interface GestioneCorse {
         }
     }
 
+    default List<Fermata> getFermata() {
+        List<Fermata> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Fermata> query = session.createNamedQuery("Fermata.findAll", Fermata.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
     default void addAutobus(@NotNull String targa) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -131,6 +157,19 @@ public interface GestioneCorse {
             e.printStackTrace();
             return null;
         }
+    }
+
+    default List<Autobus> getAutobuss() {
+        List<Autobus> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Autobus> query = session.createNamedQuery("Autobus.findAll", Autobus.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
     }
 
     default void addListaFermate(int idCorsa,
@@ -199,6 +238,19 @@ public interface GestioneCorse {
         } catch (HibernateException e) {
             e.printStackTrace();
         }
+    }
+
+    default List<ListaFermate> getFermatee() {
+        List<ListaFermate> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<ListaFermate> query = session.createNamedQuery("ListaFermate.findAll", ListaFermate.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
     }
 
     default List<ListaFermate> corseArrivonoOrario(Time ora) {
