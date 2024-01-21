@@ -1,8 +1,16 @@
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import ui.UIUtil;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -17,53 +25,96 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        TreeItem<String> rootItem = new TreeItem<>("Home");
-        TreeItem<String> acquisti = new TreeItem<>("Gestione Acquisti");
-        TreeItem<String> contabilita = new TreeItem<>("Gestione Contabilita");
-        TreeItem<String> corse = new TreeItem<>("Gestione Corse");
-        TreeItem<String> dipendenti = new TreeItem<>("Gestione Dipendenti");
-        TreeItem<String> reclamo = new TreeItem<>("Gestione Reclamo");
-
-        //Corse
-        TreeItem<String> corsa = new TreeItem<>("Corsa");
-        TreeItem<String> fermata = new TreeItem<>("Fermata");
-        corse.getChildren().addAll(corsa, fermata);
-
-        //Contabilita
-        TreeItem<String> transazione = new TreeItem<>("Transazione");
-        TreeItem<String> fattura = new TreeItem<>("Fattura");
-        TreeItem<String> conto = new TreeItem<>("Conto");
-        TreeItem<String> bene = new TreeItem<>("Bene");
-        contabilita.getChildren().addAll(transazione, fattura, conto, bene);
-
-        //Acquisti
-        TreeItem<String> fornitore = new TreeItem<>("Fornitore");
-        TreeItem<String> automezziOrdinare = new TreeItem<>("Automezzo Da Ordinare");
-        TreeItem<String> prodottoOrdinare = new TreeItem<>("Prodotto Da Ordinare");
-        TreeItem<String> ordine = new TreeItem<>("Ordine");
-        TreeItem<String> preventivo = new TreeItem<>("Preventivo");
-        acquisti.getChildren().addAll(fornitore, automezziOrdinare, prodottoOrdinare, ordine, preventivo);
-
-        //Dipendenti
-        TreeItem<String> dipendente = new TreeItem<>("Dipendenti");
-        TreeItem<String> turni = new TreeItem<>("Turno");
-        TreeItem<String> requisitiMinimiCandidatura = new TreeItem<>("Requisito minimo candidatura");
-        TreeItem<String> postiVacanti = new TreeItem<>("Posti vacanti");
-        TreeItem<String> ruolo = new TreeItem<>("Ruolo");
-        TreeItem<String> dipartimento = new TreeItem<>("Dipartimento");
-        dipendenti.getChildren().addAll(dipartimento, dipendente, turni, ruolo, postiVacanti, requisitiMinimiCandidatura);
-
-        //Reclamo
-        TreeItem<String> richiestaCliente = new TreeItem<>("Richiesta Cliente");
-        TreeItem<String> cliente = new TreeItem<>("Cliente");
-        reclamo.getChildren().addAll(cliente, richiestaCliente);
-
-        rootItem.getChildren().addAll(acquisti, contabilita, corse, dipendenti, reclamo);
-        homeTreeView.setRoot(rootItem);
+        UIUtil.inizializzaFinestra(homeTreeView);
     }
 
-    public void selectItem() {
 
+    public void selectItem(MouseEvent event) throws IOException {
+        TreeItem<String> item = (TreeItem<String>) homeTreeView.getSelectionModel().getSelectedItem();
+        if (item != null) {
+            switch (item.getValue()) {
+                case "Corsa" -> {
+                    // Handle Corsa case
+                    System.out.println("Handling Corsa case");
+                }
+                case "Fermata" -> {
+                    // Handle Fermata case
+                    System.out.println("Handling Fermata case");
+                }
+                case "Transazione" -> {
+                    // Handle Transazione case
+                    System.out.println("Handling Transazione case");
+                }
+                case "Fattura" -> {
+                    // Handle Fattura case
+                    System.out.println("Handling Fattura case");
+                }
+                case "Conto" -> {
+                    // Handle Conto case
+                    System.out.println("Handling Conto case");
+                }
+                case "Bene" -> {
+                    // Handle Bene case
+                    System.out.println("Handling Bene case");
+                }
+                case "Fornitore" -> {
+                    Parent root = FXMLLoader.load(getClass().getResource("/ui/acquisti/fornitori.fxml"));
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                }
+                case "Automezzo Da Ordinare" -> {
+                    // Handle Automezzo Da Ordinare case
+                    System.out.println("Handling Automezzo Da Ordinare case");
+                }
+                case "Prodotto Da Ordinare" -> {
+                    // Handle Prodotto Da Ordinare case
+                    System.out.println("Handling Prodotto Da Ordinare case");
+                }
+                case "Ordine" -> {
+                    // Handle Ordine case
+                    System.out.println("Handling Ordine case");
+                }
+                case "Preventivo" -> {
+                    // Handle Preventivo case
+                    System.out.println("Handling Preventivo case");
+                }
+                case "Dipendenti" -> {
+                    // Handle Dipendenti case
+                    System.out.println("Handling Dipendenti case");
+                }
+                case "Turno" -> {
+                    // Handle Turno case
+                    System.out.println("Handling Turno case");
+                }
+                case "Requisito minimo candidatura" -> {
+                    // Handle Requisito minimo candidatura case
+                    System.out.println("Handling Requisito minimo candidatura case");
+                }
+                case "Posti vacanti" -> {
+                    // Handle Posti vacanti case
+                    System.out.println("Handling Posti vacanti case");
+                }
+                case "Ruolo" -> {
+                    // Handle Ruolo case
+                    System.out.println("Handling Ruolo case");
+                }
+                case "Dipartimento" -> {
+                    // Handle Dipartimento case
+                    System.out.println("Handling Dipartimento case");
+                }
+                case "Richiesta Cliente" -> {
+                    // Handle Richiesta Cliente case
+                    System.out.println("Handling Richiesta Cliente case");
+                }
+                case "Cliente" -> {
+                    // Handle Cliente case
+                    System.out.println("Handling Cliente case");
+                }
+                default -> {
+                }
+            }
+        }
     }
-
 }

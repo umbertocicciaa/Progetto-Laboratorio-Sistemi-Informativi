@@ -3,6 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import logic.HibernateFactory;
 
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        HibernateFactory.ISTANCE.getSessionFactory();
         Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));
         stage.setTitle("Consorzio Autolinee Cosenza");
         stage.setScene(new Scene(root,500,500));
