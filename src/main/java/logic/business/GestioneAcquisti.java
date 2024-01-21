@@ -67,6 +67,19 @@ public interface GestioneAcquisti {
         }
     }
 
+    default List<Fornitore> getFornitori() {
+        List<Fornitore> fornitori = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Fornitore> query = session.createNamedQuery("Fornitore.findAll", Fornitore.class);
+            fornitori.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return fornitori;
+    }
+
     default void addProdotto(int codice, @NotNull String tipo, int quantitaNecessaria) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -113,6 +126,19 @@ public interface GestioneAcquisti {
         } catch (HibernateException exception) {
             exception.printStackTrace();
         }
+    }
+
+    default List<Prodotto> getProdotto() {
+        List<Prodotto> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Prodotto> query = session.createNamedQuery("Prodotto.findAll", Prodotto.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
     }
 
     default void addAutomezzo(@NotNull String targa, @NotNull String marca, @NotNull String assicurazione, @NotNull BigDecimal prezzo) {
@@ -165,6 +191,19 @@ public interface GestioneAcquisti {
         }
     }
 
+    default List<Automezzo> getAutomezzi() {
+        List<Automezzo> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Automezzo> query = session.createNamedQuery("Automezzo.findAll", Automezzo.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
     default void addPreventivo(@NotNull String piva, int prodotto, @NotNull String automezzo, @NotNull BigDecimal prezzo, @NotNull Date scadenza, @NotNull Date scrittura) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -213,6 +252,19 @@ public interface GestioneAcquisti {
             exception.printStackTrace();
             return preventivo;
         }
+    }
+
+    default List<Preventivo> getPreventivo() {
+        List<Preventivo> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Preventivo> query = session.createNamedQuery("Preventivo.findAll", Preventivo.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
     }
 
     default void addOrdine(int codice, @NotNull String stato, @NotNull Date data, int quantita, int prodotto, String automezzo) {
@@ -269,6 +321,19 @@ public interface GestioneAcquisti {
         } catch (HibernateException exception) {
             exception.printStackTrace();
         }
+    }
+
+    default List<Ordine> getOrdine() {
+        List<Ordine> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Ordine> query = session.createNamedQuery("Ordine.findAll", Ordine.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
     }
 
     default List<Fornitore> fornitoriDiUnaCitta(@NotNull String citta) {
