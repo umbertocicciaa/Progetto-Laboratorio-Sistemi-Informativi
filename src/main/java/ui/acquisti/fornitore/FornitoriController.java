@@ -7,10 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -22,6 +24,7 @@ import ui.UIUtil;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static ui.UIUtil.messaggioParametriScorretti;
@@ -36,7 +39,7 @@ public class FornitoriController implements Initializable {
     @FXML
     private Button addButton;
     @FXML
-    private TreeView homeTreeView;
+    private TreeView<String> homeTreeView;
     @FXML
     private TableView<Fornitore> tableView;
     @FXML
@@ -93,7 +96,7 @@ public class FornitoriController implements Initializable {
 
 
     public void addAction() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/acquisti/insertFornitore.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/acquisti/insertFornitore.fxml")));
 
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -146,8 +149,8 @@ public class FornitoriController implements Initializable {
         }
     }
 
-    public void selectItem() {
-        TreeItem<String> item = (TreeItem<String>) homeTreeView.getSelectionModel().getSelectedItem();
+    public void selectItem(ContextMenuEvent contextMenuEvent) {
+        TreeItem<String> item =homeTreeView.getSelectionModel().getSelectedItem();
         if (item != null) {
             switch (item.getValue()) {
                 case "Corsa" -> {
@@ -179,8 +182,15 @@ public class FornitoriController implements Initializable {
                     System.out.println("Handling Automezzo Da Ordinare case");
                 }
                 case "Prodotto Da Ordinare" -> {
-                    // Handle Prodotto Da Ordinare case
-                    System.out.println("Handling Prodotto Da Ordinare case");
+                    try {
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/prodotto/prodotto.fxml")));
+                        Stage stage = (Stage) ((Node) contextMenuEvent.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    }catch (Exception exception){
+                        exception.printStackTrace();
+                    }
                 }
                 case "Ordine" -> {
                     // Handle Ordine case
