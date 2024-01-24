@@ -10,7 +10,6 @@ import logic.business.GestioneAcquisti;
 import org.hibernate.HibernateException;
 import ui.Util;
 
-import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 /**
