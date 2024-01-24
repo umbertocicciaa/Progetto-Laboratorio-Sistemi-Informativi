@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static ui.UIUtil.messaggioParametriScorretti;
+import static ui.Util.stringheVerificate;
 
 /**
  * @author umbertodomenicociccia
@@ -31,16 +32,11 @@ public class UpdateFornitoreController implements Initializable {
     private final GestioneAcquisti gestioneAcquisti = new GestioneAcquisti() {
     };
 
-    private boolean isVerificato(String nome, String citta) {
-        return !nome.isEmpty() && !citta.isEmpty() &&
-                !nome.toLowerCase().contains(Util.getFrom()) && !nome.toLowerCase().contains(Util.getSelect()) && !nome.toLowerCase().contains(Util.getWhere()) &&
-                !citta.toLowerCase().contains(Util.getFrom()) && !citta.toLowerCase().contains(Util.getSelect()) && !citta.toLowerCase().contains(Util.getWhere());
-    }
 
     public void handleOkButton() {
         String nome = nomeField.getText();
         String citta = cittaField.getText();
-        if (isVerificato(nome, citta)) {
+        if (stringheVerificate(nome, citta)) {
             try {
                 gestioneAcquisti.updateFornitore(piva, nome, citta);
             } catch (HibernateException ex) {

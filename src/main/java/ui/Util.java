@@ -19,5 +19,19 @@ public final class Util {
         return where;
     }
 
+    public static boolean stringheVerificate(String ...strings){
+        boolean verificato=true;
+        for(String stringa:strings){
+            if(     stringa.isEmpty() ||
+                    stringa.toLowerCase().contains(select)||
+                    stringa.toLowerCase().contains(from) ||
+                    stringa.toLowerCase().contains(where)){
+                verificato=false;
+                break;
+            }
+        }
+        return verificato;
+    }
+
 
 }
