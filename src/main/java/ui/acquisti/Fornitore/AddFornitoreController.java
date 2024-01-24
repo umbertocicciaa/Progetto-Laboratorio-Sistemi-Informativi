@@ -1,4 +1,4 @@
-package ui.acquisti;
+package ui.acquisti.Fornitore;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

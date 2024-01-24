@@ -1,4 +1,4 @@
-package ui.acquisti;
+package ui.acquisti.Fornitore;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,12 +7,16 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import logic.business.GestioneAcquisti;
 import org.hibernate.HibernateException;
+import ui.Util;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static ui.UIUtil.messaggioParametriScorretti;
+
 /**
  * @author umbertodomenicociccia
- * */
+ */
 public class UpdateFornitoreController implements Initializable {
     @FXML
     private TextArea nomeField;
@@ -27,17 +31,23 @@ public class UpdateFornitoreController implements Initializable {
     private final GestioneAcquisti gestioneAcquisti = new GestioneAcquisti() {
     };
 
+    private boolean isVerificato(String nome, String citta) {
+        return !nome.isEmpty() && !citta.isEmpty() &&
+                !nome.toLowerCase().contains(Util.getFrom()) && !nome.toLowerCase().contains(Util.getSelect()) && !nome.toLowerCase().contains(Util.getWhere()) &&
+                !citta.toLowerCase().contains(Util.getFrom()) && !citta.toLowerCase().contains(Util.getSelect()) && !citta.toLowerCase().contains(Util.getWhere());
+    }
+
     public void handleOkButton() {
-        String nome = null;
-        String citta = null;
-        if (!nomeField.getText().isEmpty())
-            nome = nomeField.getText();
-        if (!cittaField.getText().isEmpty())
-            citta = cittaField.getText();
-        try {
-            gestioneAcquisti.updateFornitore(piva, nome, citta);
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
+        String nome = nomeField.getText();
+        String citta = cittaField.getText();
+        if (isVerificato(nome, citta)) {
+            try {
+                gestioneAcquisti.updateFornitore(piva, nome, citta);
+            } catch (HibernateException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            messaggioParametriScorretti();
         }
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
