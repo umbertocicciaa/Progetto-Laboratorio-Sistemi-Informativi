@@ -7,7 +7,7 @@ import javafx.scene.control.TreeView;
  * @author umbertodomenicociccia
  * */
 public  final  class UIUtil {
-   public static void inizializzaFinestra(TreeView homeTreeView){
+   public static void inizializzaFinestra(TreeView<String> homeTreeView){
        TreeItem<String> rootItem = new TreeItem<>("Home");
        TreeItem<String> acquisti = new TreeItem<>("Gestione Acquisti");
        TreeItem<String> contabilita = new TreeItem<>("Gestione Contabilita");

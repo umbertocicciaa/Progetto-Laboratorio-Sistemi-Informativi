@@ -12,6 +12,7 @@ import ui.UIUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -21,7 +22,7 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
     @FXML
-    private TreeView homeTreeView;
+    private TreeView<String> homeTreeView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -30,7 +31,7 @@ public class Controller implements Initializable {
 
 
     public void selectItem(MouseEvent event) throws IOException {
-        TreeItem<String> item = (TreeItem<String>) homeTreeView.getSelectionModel().getSelectedItem();
+        TreeItem<String> item =homeTreeView.getSelectionModel().getSelectedItem();
         if (item != null) {
             switch (item.getValue()) {
                 case "Corsa" -> {
@@ -58,7 +59,7 @@ public class Controller implements Initializable {
                     System.out.println("Handling Bene case");
                 }
                 case "Fornitore" -> {
-                    Parent root = FXMLLoader.load(getClass().getResource("/ui/acquisti/fornitori.fxml"));
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/acquisti/fornitori.fxml")));
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     Scene scene = new Scene(root);
                     stage.setScene(scene);

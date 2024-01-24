@@ -1,4 +1,4 @@
-package ui.acquisti.Fornitore;
+package ui.acquisti.fornitore;
 
 import data.Fornitore;
 import javafx.collections.FXCollections;
