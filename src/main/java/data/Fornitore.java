@@ -72,7 +72,6 @@ public class Fornitore implements Serializable {
     public String getPiva() {
         return piva;
     }
-
     public void setPiva(String piva) {
         this.piva = piva;
     }

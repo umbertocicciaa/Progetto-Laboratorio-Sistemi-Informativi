@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * @author umbertodomenicociccia
  */
+@SuppressWarnings("CallToPrintStackTrace")
 public interface GestioneAcquisti {
     SessionFactory sessionFactory = HibernateFactory.ISTANCE.getSessionFactory();
 
@@ -33,7 +34,7 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Fornitore fornitore = session.get(Fornitore.class, piva);
-            session.delete(fornitore);
+            session.remove(fornitore);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
@@ -67,6 +68,19 @@ public interface GestioneAcquisti {
         }
     }
 
+    default List<Fornitore> getFornitori() {
+        List<Fornitore> fornitori = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Fornitore> query = session.createNamedQuery("Fornitore.findAll", Fornitore.class);
+            fornitori.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return fornitori;
+    }
+
     default void addProdotto(int codice, @NotNull String tipo, int quantitaNecessaria) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -81,7 +95,7 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Prodotto prodotto = session.get(Prodotto.class, codice);
-            session.delete(prodotto);
+            session.remove(prodotto);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
@@ -115,6 +129,19 @@ public interface GestioneAcquisti {
         }
     }
 
+    default List<Prodotto> getProdotto() {
+        List<Prodotto> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Prodotto> query = session.createNamedQuery("Prodotto.findAll", Prodotto.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
     default void addAutomezzo(@NotNull String targa, @NotNull String marca, @NotNull String assicurazione, @NotNull BigDecimal prezzo) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -129,7 +156,7 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Automezzo automezzo = session.get(Automezzo.class, targa);
-            session.delete(automezzo);
+            session.remove(automezzo);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
@@ -165,6 +192,19 @@ public interface GestioneAcquisti {
         }
     }
 
+    default List<Automezzo> getAutomezzi() {
+        List<Automezzo> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Automezzo> query = session.createNamedQuery("Automezzo.findAll", Automezzo.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
     default void addPreventivo(@NotNull String piva, int prodotto, @NotNull String automezzo, @NotNull BigDecimal prezzo, @NotNull Date scadenza, @NotNull Date scrittura) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -179,7 +219,7 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Preventivo preventivo = session.get(Preventivo.class, new PreventivoPK(piva, prodotto, automezzo));
-            session.delete(preventivo);
+            session.remove(preventivo);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
@@ -215,10 +255,23 @@ public interface GestioneAcquisti {
         }
     }
 
+    default List<Preventivo> getPreventivo() {
+        List<Preventivo> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Preventivo> query = session.createNamedQuery("Preventivo.findAll", Preventivo.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
     default void addOrdine(int codice, @NotNull String stato, @NotNull Date data, int quantita, int prodotto, String automezzo) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Ordine ordine = null;
+            Ordine ordine;
             if (automezzo == null)
                 ordine = new Ordine(codice, stato, data, quantita, null, session.get(Prodotto.class, prodotto));
             else if (prodotto < 0) {
@@ -248,7 +301,7 @@ public interface GestioneAcquisti {
     default void removeOrdine(int codice) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(session.get(Ordine.class, codice));
+            session.remove(session.get(Ordine.class, codice));
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
@@ -269,6 +322,19 @@ public interface GestioneAcquisti {
         } catch (HibernateException exception) {
             exception.printStackTrace();
         }
+    }
+
+    default List<Ordine> getOrdine() {
+        List<Ordine> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Ordine> query = session.createNamedQuery("Ordine.findAll", Ordine.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
     }
 
     default List<Fornitore> fornitoriDiUnaCitta(@NotNull String citta) {
