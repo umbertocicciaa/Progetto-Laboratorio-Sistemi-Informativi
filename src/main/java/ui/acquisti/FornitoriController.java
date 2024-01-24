@@ -17,11 +17,14 @@ import javafx.stage.Stage;
 import logic.business.GestioneAcquisti;
 import org.hibernate.HibernateException;
 import ui.UIUtil;
+import ui.Util;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static ui.UIUtil.messaggioParametriScorretti;
 
 /**
  * @author umbertodomenicociccia
@@ -134,7 +137,7 @@ public class FornitoriController implements Initializable {
 
 
     public void getSelectedCriterio(ActionEvent event) {
-        criterio = choiceItem.getValue().toString();
+        criterio = choiceItem.getValue();
         System.out.println(criterio);
     }
 
@@ -221,8 +224,16 @@ public class FornitoriController implements Initializable {
     }
 
 
+    private boolean isVerificato(String text){
+        return !text.toLowerCase().contains(Util.getSelect()) && !text.toLowerCase().contains(Util.getWhere()) && !text.toLowerCase().contains(Util.getFrom())   ;
+    }
+
     public void searchFornitori() {
         String text = ricercaFornitore.getText();
+        if(!isVerificato(text)){
+            messaggioParametriScorretti();
+            return;
+        }
         System.out.println(text);
         if (criterio != null) {
             switch (criterio) {
@@ -248,6 +259,5 @@ public class FornitoriController implements Initializable {
                 }
             }
         }
-
     }
 }

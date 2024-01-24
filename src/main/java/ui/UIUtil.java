@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 /**
@@ -51,4 +52,18 @@ public  final  class UIUtil {
        rootItem.getChildren().addAll(acquisti, contabilita, corse, dipendenti, reclamo);
        homeTreeView.setRoot(rootItem);
    }
+
+    public static void messaggioParametriScorretti(){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText("Errore!");
+        errorAlert.setContentText("Hai fornito parametri scorretti");
+        errorAlert.showAndWait();
+    }
+
+    public static void messaggioErroreInserimento(String text){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText("Errore!");
+        errorAlert.setContentText("Hai inserito un "+text+" gia esistente");
+        errorAlert.showAndWait();
+    }
 }

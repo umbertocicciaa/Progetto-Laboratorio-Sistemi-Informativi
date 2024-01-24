@@ -2,7 +2,6 @@ package ui.acquisti;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
@@ -12,6 +11,10 @@ import ui.Util;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static ui.UIUtil.messaggioErroreInserimento;
+import static ui.UIUtil.messaggioParametriScorretti;
+
 /**
  * @author umbertodomenicociccia
  * */
@@ -45,18 +48,16 @@ public class AddFornitoreController implements Initializable {
                 gestioneAcquisti.addFornitore(piva, nome, citta);
             } catch (HibernateException ex) {
                 ex.printStackTrace();
+                messaggioErroreInserimento("Fornitore");
             }
         }else{
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Errore!");
-            errorAlert.setContentText("Hai fornito parametri scorretti");
-            errorAlert.showAndWait();
+            messaggioParametriScorretti();
         }
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }
 
-    private static boolean isVerifica(String piva, String nome, String citta) {
+    private boolean isVerifica(String piva, String nome, String citta) {
         boolean conditionPiva=!piva.isEmpty()&& !piva.toLowerCase().contains(Util.getFrom()) && !piva.toLowerCase().contains(Util.getWhere()) && !piva.toLowerCase().contains(Util.getSelect());
         boolean conditioNome=!nome.isEmpty() && !nome.toLowerCase().contains(Util.getFrom()) && !nome.toLowerCase().contains(Util.getWhere()) && !nome.toLowerCase().contains(Util.getSelect());
         boolean conditionCitta=!citta.isEmpty() && !citta.toLowerCase().contains(Util.getFrom()) && !citta.toLowerCase().contains(Util.getWhere()) && !citta.toLowerCase().contains(Util.getSelect());
