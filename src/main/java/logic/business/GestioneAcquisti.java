@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * @author umbertodomenicociccia
  */
+@SuppressWarnings("CallToPrintStackTrace")
 public interface GestioneAcquisti {
     SessionFactory sessionFactory = HibernateFactory.ISTANCE.getSessionFactory();
 
@@ -33,7 +34,7 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Fornitore fornitore = session.get(Fornitore.class, piva);
-            session.delete(fornitore);
+            session.remove(fornitore);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
@@ -94,7 +95,7 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Prodotto prodotto = session.get(Prodotto.class, codice);
-            session.delete(prodotto);
+            session.remove(prodotto);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
@@ -155,7 +156,7 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Automezzo automezzo = session.get(Automezzo.class, targa);
-            session.delete(automezzo);
+            session.remove(automezzo);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
@@ -218,7 +219,7 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Preventivo preventivo = session.get(Preventivo.class, new PreventivoPK(piva, prodotto, automezzo));
-            session.delete(preventivo);
+            session.remove(preventivo);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
@@ -270,7 +271,7 @@ public interface GestioneAcquisti {
     default void addOrdine(int codice, @NotNull String stato, @NotNull Date data, int quantita, int prodotto, String automezzo) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Ordine ordine = null;
+            Ordine ordine;
             if (automezzo == null)
                 ordine = new Ordine(codice, stato, data, quantita, null, session.get(Prodotto.class, prodotto));
             else if (prodotto < 0) {
@@ -300,7 +301,7 @@ public interface GestioneAcquisti {
     default void removeOrdine(int codice) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(session.get(Ordine.class, codice));
+            session.remove(session.get(Ordine.class, codice));
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
