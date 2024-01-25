@@ -43,14 +43,20 @@ public class AddFornitoreController implements Initializable {
         String piva = pivaField.getText();
         String nome = nomeField.getText();
         String citta = cittaField.getText();
-
+        boolean inserito=false;
         if (stringheVerificate(piva, nome, citta)) {
             try {
                 gestioneAcquisti.addFornitore(piva, nome, citta);
+                 inserito=true;
             } catch (HibernateException ex) {
                 ex.printStackTrace();
-                messaggioErroreInserimento("Fornitore");
+
+            }finally {
+                if(!inserito){
+                    messaggioErroreInserimento("Fornitore");
+                }
             }
+
         }else{
             messaggioParametriScorretti();
         }
