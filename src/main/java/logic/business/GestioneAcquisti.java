@@ -81,10 +81,10 @@ public interface GestioneAcquisti {
         return fornitori;
     }
 
-    default void addProdotto(int codice, @NotNull String tipo, int quantitaNecessaria) {
+    default void addProdotto(@NotNull String tipo, int quantitaNecessaria) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.persist(new Prodotto(codice, tipo, quantitaNecessaria));
+            session.persist(new Prodotto(tipo, quantitaNecessaria));
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
@@ -97,10 +97,20 @@ public interface GestioneAcquisti {
             Prodotto prodotto = session.get(Prodotto.class, codice);
             session.remove(prodotto);
             session.getTransaction().commit();
+            session.beginTransaction();
+            Query<Prodotto> query = session.createNativeQuery("select count(*) from Prodotto", Prodotto.class);
+            int numeriProdotti=query.getFirstResult();
+            System.out.println(numeriProdotti);
+            if (numeriProdotti == 0) {
+                Query<Prodotto> reset = session.createNativeQuery("ALTER TABLE Prodotto auto_increment = 1", Prodotto.class);
+                reset.executeUpdate();
+            }
+            session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
         }
     }
+
 
     default Prodotto getProdotto(int codice) {
         Prodotto prodotto = null;
@@ -129,7 +139,7 @@ public interface GestioneAcquisti {
         }
     }
 
-    default List<Prodotto> getProdotto() {
+    default List<Prodotto> getProdotti() {
         List<Prodotto> res = new ArrayList<>();
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
