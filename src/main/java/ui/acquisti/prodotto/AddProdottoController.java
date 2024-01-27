@@ -6,7 +6,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import org.hibernate.HibernateException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
