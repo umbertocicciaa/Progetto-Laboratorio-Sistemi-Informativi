@@ -40,9 +40,7 @@ public class UpdateProdottoController implements Initializable {
                     messaggioParametriScorretti();
                     return;
                 }
-
                 getGestioneAcquisti().updateProdotto(codice, tipo.isEmpty() ? null : tipo, quantita.isEmpty() ? null : numero);
-
             } catch (NumberFormatException ex) {
                 messaggioParametriScorretti();
             } catch (HibernateException ex) {

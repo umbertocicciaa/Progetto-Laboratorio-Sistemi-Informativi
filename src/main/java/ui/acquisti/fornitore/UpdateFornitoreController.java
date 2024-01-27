@@ -7,13 +7,12 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.hibernate.HibernateException;
 
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
 import static ui.UIUtil.messaggioParametriScorretti;
-import static ui.Util.stringheVerificate;
+import static ui.Util.stringheVerificatePossibileEmpty;
 
 /**
  * @author umbertodomenicociccia
@@ -32,14 +31,16 @@ public class UpdateFornitoreController implements Initializable {
     public void handleOkButton() {
         String nome = nomeField.getText();
         String citta = cittaField.getText();
-        if (stringheVerificate(nome, citta)) {
+        if (stringheVerificatePossibileEmpty(nome, citta)) {
             try {
-                getGestioneAcquisti().updateFornitore(piva, nome, citta);
+                if (nome.isEmpty() && citta.isEmpty()) {
+                    messaggioParametriScorretti();
+                    return;
+                }
+                getGestioneAcquisti().updateFornitore(piva, nome.isEmpty() ? null : nome, citta.isEmpty() ? null : citta);
             } catch (HibernateException ex) {
                 ex.printStackTrace();
             }
-        } else {
-            messaggioParametriScorretti();
         }
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
