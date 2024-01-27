@@ -12,6 +12,7 @@ import org.hibernate.HibernateException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static logic.BusinessFacade.getGestioneAcquisti;
 import static ui.UIUtil.messaggioErroreInserimento;
 import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificate;
@@ -31,8 +32,6 @@ public class AddFornitoreController implements Initializable {
     @FXML
     private Button cancelButton;
 
-    private final GestioneAcquisti gestioneAcquisti = new GestioneAcquisti() {
-    };
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,7 +45,7 @@ public class AddFornitoreController implements Initializable {
         boolean inserito=false;
         if (stringheVerificate(piva, nome, citta)) {
             try {
-                gestioneAcquisti.addFornitore(piva, nome, citta);
+                getGestioneAcquisti().addFornitore(piva, nome, citta);
                  inserito=true;
             } catch (HibernateException ex) {
                 ex.printStackTrace();
@@ -56,7 +55,6 @@ public class AddFornitoreController implements Initializable {
                     messaggioErroreInserimento("Fornitore");
                 }
             }
-
         }else{
             messaggioParametriScorretti();
         }
