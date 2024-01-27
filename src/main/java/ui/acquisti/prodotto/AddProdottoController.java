@@ -30,22 +30,25 @@ public class AddProdottoController implements Initializable {
     public void handleOkButton(ActionEvent actionEvent) {
         String tipo = tipoField.getText();
         String quantita = quantitaField.getText();
-        boolean inserito=false;
+        boolean inserito = false;
         if (stringheVerificate(tipo)) {
+
+            int numero = Integer.parseInt(quantita);
+            if (numero < 0) {
+                messaggioParametriScorretti();
+                return;
+            }
             try {
-                int numero=Integer.parseInt(quantita);
-                if(numero<0)
-                    throw new IllegalArgumentException();
                 getGestioneAcquisti().addProdotto(tipo, numero);
-                inserito=true;
+                inserito = true;
             } catch (Exception ex) {
                 ex.printStackTrace();
-            }finally {
-                if(!inserito){
+            } finally {
+                if (!inserito) {
                     messaggioErroreInserimento("Prodotto");
                 }
             }
-        }else{
+        } else {
             messaggioParametriScorretti();
         }
         Stage stage = (Stage) okButton.getScene().getWindow();

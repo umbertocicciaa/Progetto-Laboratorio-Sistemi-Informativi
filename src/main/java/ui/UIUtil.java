@@ -42,7 +42,7 @@ public final class UIUtil {
     public static void messaggioErroreInserimento(String text) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setHeaderText("Errore!");
-        errorAlert.setContentText("Hai inserito un " + text + " gia esistente");
+        errorAlert.setContentText("Hai fornito un " + text + " errato");
         errorAlert.showAndWait();
     }
 }
