@@ -26,6 +26,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
+import static ui.UIUtil.messaggioParametriScorretti;
+import static ui.Util.stringheVerificate;
 
 public class ProdottoController implements Initializable {
 
@@ -82,7 +84,48 @@ public class ProdottoController implements Initializable {
     }
 
     public void searchProdotto(ActionEvent actionEvent) {
-
+        String text = ricercaProdotto.getText();
+        if (!stringheVerificate(text)) {
+            messaggioParametriScorretti();
+            return;
+        }
+        if (criterio != null) {
+            switch (criterio) {
+                case "Codice" -> {
+                    try {
+                        int codice = Integer.parseInt(text);
+                        System.out.println(codice);
+                        prodottoTableView.clear();
+                        prodottoTableView.addAll(getGestioneAcquisti().prodottiDiUnCodice(codice));
+                        tableView.refresh();
+                    } catch (NumberFormatException exception) {
+                        exception.printStackTrace();
+                        messaggioParametriScorretti();
+                    }
+                }
+                case "Tipo" -> {
+                    prodottoTableView.clear();
+                    prodottoTableView.addAll(getGestioneAcquisti().prodottiDiUnTipo(text));
+                    tableView.refresh();
+                }
+                case "Quantita Necessaria" -> {
+                    try {
+                        int quantita = Integer.parseInt(text);
+                        prodottoTableView.clear();
+                        prodottoTableView.addAll(getGestioneAcquisti().prodottiDiUnaNecessita(quantita));
+                        tableView.refresh();
+                    } catch (NumberFormatException exception) {
+                        exception.printStackTrace();
+                        messaggioParametriScorretti();
+                    }
+                }
+                case "Tutti" -> {
+                    prodottoTableView.clear();
+                    prodottoTableView.addAll(getGestioneAcquisti().getProdotti());
+                    tableView.refresh();
+                }
+            }
+        }
     }
 
     public void addAction(ActionEvent actionEvent) throws IOException {
@@ -133,9 +176,9 @@ public class ProdottoController implements Initializable {
     }
 
     public void deleteProdotto(ActionEvent actionEvent) {
-        if(selectedProdotto!=null){
+        if (selectedProdotto != null) {
             getGestioneAcquisti().removeProdotto(selectedProdotto.getCodProdotto());
-            selectedProdotto=null;
+            selectedProdotto = null;
             refreshTable();
         }
     }

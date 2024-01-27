@@ -450,7 +450,7 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Query<Prodotto> query = session.createNamedQuery("Prodotto.findByCodProdotto", Prodotto.class);
-            query.setParameter("codice", codice);
+            query.setParameter("codProdotto", codice);
             prodotti.addAll(query.getResultList());
             session.getTransaction().commit();
         } catch (Exception exception) {
