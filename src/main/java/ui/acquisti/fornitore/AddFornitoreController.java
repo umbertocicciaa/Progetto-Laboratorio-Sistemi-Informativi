@@ -5,9 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import logic.business.GestioneAcquisti;
 import org.hibernate.HibernateException;
-
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,7 +17,7 @@ import static ui.Util.stringheVerificate;
 
 /**
  * @author umbertodomenicociccia
- * */
+ */
 public class AddFornitoreController implements Initializable {
     @FXML
     private TextArea pivaField;
@@ -42,25 +40,34 @@ public class AddFornitoreController implements Initializable {
         String piva = pivaField.getText();
         String nome = nomeField.getText();
         String citta = cittaField.getText();
-        boolean inserito=false;
-        if (stringheVerificate(piva, nome, citta)) {
-            try {
-                getGestioneAcquisti().addFornitore(piva, nome, citta);
-                 inserito=true;
-            } catch (HibernateException ex) {
-                ex.printStackTrace();
 
-            }finally {
-                if(!inserito){
-                    messaggioErroreInserimento("Fornitore");
-                }
+        if (stringheVerificate(piva, nome, citta)) {
+            boolean inserito = addFornitore(piva, nome, citta);
+            if (!inserito) {
+                messaggioErroreInserimento("Fornitore");
             }
-        }else{
+        } else {
             messaggioParametriScorretti();
         }
+        closeStage();
+    }
+
+    private boolean addFornitore(String piva, String nome, String citta) {
+        try {
+            getGestioneAcquisti().addFornitore(piva, nome, citta);
+            return true;
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+    }
+
+    private void closeStage() {
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }
+
 
     public void handleCancelButton() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();

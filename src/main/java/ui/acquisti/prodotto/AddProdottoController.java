@@ -29,36 +29,37 @@ public class AddProdottoController implements Initializable {
     public void handleOkButton(ActionEvent actionEvent) {
         String tipo = tipoField.getText();
         String quantita = quantitaField.getText();
-        boolean inserito = false;
-        if (stringheVerificate(tipo)) {
-            int numero;
-            try {
-                numero = Integer.parseInt(quantita);
-            } catch (NumberFormatException excp) {
-                excp.printStackTrace();
-                return;
-            }
-            if (numero < 0) {
-                messaggioParametriScorretti();
-                return;
-            }
-            try {
-                getGestioneAcquisti().addProdotto(tipo, numero);
-                inserito = true;
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            } finally {
-                if (!inserito) {
-                    messaggioErroreInserimento("Prodotto");
-                }
-            }
-        } else {
+
+        if (!stringheVerificate(tipo) || !validaQuantita(quantita)) {
             messaggioParametriScorretti();
+            return;
+        }
+
+        try {
+            getGestioneAcquisti().addProdotto(tipo, Integer.parseInt(quantita));
+            closeStage();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            messaggioErroreInserimento("Prodotto");
         }
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }
 
+    private boolean validaQuantita(String quantita) {
+        try {
+            int numero = Integer.parseInt(quantita);
+            return numero >= 0;
+        } catch (NumberFormatException excp) {
+            excp.printStackTrace();
+            return false;
+        }
+    }
+
+    private void closeStage() {
+        Stage stage = (Stage) okButton.getScene().getWindow();
+        stage.close();
+    }
     public void handleCancelButton(ActionEvent actionEvent) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();

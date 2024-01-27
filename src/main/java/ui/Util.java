@@ -8,17 +8,12 @@ public final class Util {
     private final static String from = "from";
     private final static String where = "where";
 
-    public static String getSelect() {
-        return select;
-    }
+    private final static String alter = "alter";
+    private final static String table = "table";
 
-    public static String getFrom() {
-        return from;
-    }
+    private final static String create = "create";
 
-    public static String getWhere() {
-        return where;
-    }
+    private final static String index = "index";
 
     public static boolean stringheVerificate(String... strings) {
         boolean verificato = true;
@@ -26,7 +21,12 @@ public final class Util {
             if (stringa.isEmpty() ||
                     stringa.toLowerCase().contains(select) ||
                     stringa.toLowerCase().contains(from) ||
-                    stringa.toLowerCase().contains(where)) {
+                    stringa.toLowerCase().contains(where) ||
+                    stringa.toLowerCase().contains(alter) ||
+                    stringa.toLowerCase().contains(table) ||
+                    stringa.toLowerCase().contains(create) ||
+                    stringa.toLowerCase().contains(index)
+            ) {
                 verificato = false;
                 break;
             }
@@ -37,10 +37,13 @@ public final class Util {
     public static boolean stringheVerificatePossibileEmpty(String... strings) {
         boolean verificato = true;
         for (String stringa : strings) {
-            if (
-                    stringa.toLowerCase().contains(select) ||
-                            stringa.toLowerCase().contains(from) ||
-                            stringa.toLowerCase().contains(where)) {
+            if (stringa.toLowerCase().contains(select) ||
+                    stringa.toLowerCase().contains(from) ||
+                    stringa.toLowerCase().contains(where) ||
+                    stringa.toLowerCase().contains(alter) ||
+                    stringa.toLowerCase().contains(table) ||
+                    stringa.toLowerCase().contains(create) ||
+                    stringa.toLowerCase().contains(index)) {
                 verificato = false;
                 break;
             }
