@@ -111,8 +111,25 @@ public class ProdottoController implements Initializable {
         }
     }
 
-    public void updateProdotto(ActionEvent actionEvent) {
+    public void updateProdotto(ActionEvent actionEvent) throws IOException {
+        if (selectedProdotto != null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/prodotto/updateProdotto.fxml"));
+            Parent root = loader.load();
 
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Update Prodotto");
+
+            Scene scene = new Scene(root);
+            dialogStage.setScene(scene);
+            UpdateProdottoController controller = loader.getController();
+            controller.initProdotto(selectedProdotto.getCodProdotto());
+
+            dialogStage.showAndWait();
+            refreshTable();
+            selectedProdotto = null;
+            refreshTable();
+        }
     }
 
     public void deleteProdotto(ActionEvent actionEvent) {
@@ -145,7 +162,7 @@ public class ProdottoController implements Initializable {
 
     private void getSelectedCriterio(ActionEvent actionEvent) {
         criterio = choiceItem.getValue();
-        if(criterio.equals("Tutti")){
+        if (criterio.equals("Tutti")) {
             prodottoTableView.clear();
             prodottoTableView.addAll(getGestioneAcquisti().getProdotti());
             tableView.refresh();

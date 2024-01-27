@@ -31,8 +31,13 @@ public class AddProdottoController implements Initializable {
         String quantita = quantitaField.getText();
         boolean inserito = false;
         if (stringheVerificate(tipo)) {
-
-            int numero = Integer.parseInt(quantita);
+            int numero;
+            try {
+                numero = Integer.parseInt(quantita);
+            } catch (NumberFormatException excp) {
+                excp.printStackTrace();
+                return;
+            }
             if (numero < 0) {
                 messaggioParametriScorretti();
                 return;
@@ -52,7 +57,6 @@ public class AddProdottoController implements Initializable {
         }
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
-
     }
 
     public void handleCancelButton(ActionEvent actionEvent) {
