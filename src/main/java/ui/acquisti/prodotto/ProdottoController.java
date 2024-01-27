@@ -133,7 +133,11 @@ public class ProdottoController implements Initializable {
     }
 
     public void deleteProdotto(ActionEvent actionEvent) {
-
+        if(selectedProdotto!=null){
+            getGestioneAcquisti().removeProdotto(selectedProdotto.getCodProdotto());
+            selectedProdotto=null;
+            refreshTable();
+        }
     }
 
     @Override
