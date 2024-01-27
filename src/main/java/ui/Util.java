@@ -1,7 +1,8 @@
 package ui;
+
 /**
  * @author umbertodomenicociccia
- * */
+ */
 public final class Util {
     private final static String select = "select";
     private final static String from = "from";
@@ -19,19 +20,32 @@ public final class Util {
         return where;
     }
 
-    public static boolean stringheVerificate(String ...strings){
-        boolean verificato=true;
-        for(String stringa:strings){
-            if(     stringa.isEmpty() ||
-                    stringa.toLowerCase().contains(select)||
+    public static boolean stringheVerificate(String... strings) {
+        boolean verificato = true;
+        for (String stringa : strings) {
+            if (stringa.isEmpty() ||
+                    stringa.toLowerCase().contains(select) ||
                     stringa.toLowerCase().contains(from) ||
-                    stringa.toLowerCase().contains(where)){
-                verificato=false;
+                    stringa.toLowerCase().contains(where)) {
+                verificato = false;
                 break;
             }
         }
         return verificato;
     }
 
+    public static boolean stringheVerificatePossibileEmpty(String... strings) {
+        boolean verificato = true;
+        for (String stringa : strings) {
+            if (
+                    stringa.toLowerCase().contains(select) ||
+                            stringa.toLowerCase().contains(from) ||
+                            stringa.toLowerCase().contains(where)) {
+                verificato = false;
+                break;
+            }
+        }
+        return verificato;
+    }
 
 }
