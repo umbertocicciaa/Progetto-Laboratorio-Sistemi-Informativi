@@ -5,13 +5,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import logic.business.GestioneAcquisti;
 import org.hibernate.HibernateException;
 
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static logic.BusinessFacade.getGestioneAcquisti;
 import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificate;
 
@@ -29,16 +29,12 @@ public class UpdateFornitoreController implements Initializable {
     private Button cancelButton;
     private String piva;
 
-    private final GestioneAcquisti gestioneAcquisti = new GestioneAcquisti() {
-    };
-
-
     public void handleOkButton() {
         String nome = nomeField.getText();
         String citta = cittaField.getText();
         if (stringheVerificate(nome, citta)) {
             try {
-                gestioneAcquisti.updateFornitore(piva, nome, citta);
+                getGestioneAcquisti().updateFornitore(piva, nome, citta);
             } catch (HibernateException ex) {
                 ex.printStackTrace();
             }
