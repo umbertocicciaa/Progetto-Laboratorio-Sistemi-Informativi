@@ -1,5 +1,8 @@
 package ui.acquisti.prodotto;
 
+import data.Prodotto;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,20 +10,43 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.hibernate.HibernateException;
 import ui.UIUtil;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import static logic.BusinessFacade.getGestioneAcquisti;
 
 public class ProdottoController implements Initializable {
 
     @FXML
+    private ChoiceBox<String> choiceItem;
+    @FXML
+    private TableView<Prodotto> tableView;
+    @FXML
+    private TableColumn<Prodotto, String> codice;
+    @FXML
+    private TableColumn<Prodotto, String> tipo;
+    @FXML
+    private TableColumn<Prodotto, String> quantita;
+    @FXML
+    private TextField ricercaProdotto;
+    @FXML
     private TreeView<String> homeTreeView;
+
+    private Prodotto selectedProdotto;
+    private String criterio;
+    private final ObservableList<Prodotto> prodottoTableView = FXCollections.observableArrayList();
 
     public void selectItem(MouseEvent event) {
         TreeItem<String> item = homeTreeView.getSelectionModel().getSelectedItem();
@@ -33,7 +59,7 @@ public class ProdottoController implements Initializable {
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
                         stage.show();
-                    }catch (Exception exception){
+                    } catch (Exception exception) {
                         exception.printStackTrace();
                     }
                 }
@@ -49,31 +75,80 @@ public class ProdottoController implements Initializable {
                     // Handle Preventivo case
                     System.out.println("Handling Preventivo case");
                 }
-
                 default -> {
                 }
             }
         }
     }
 
-    public void searchFornitori(ActionEvent actionEvent) {
+    public void searchProdotto(ActionEvent actionEvent) {
 
     }
 
-    public void addAction(ActionEvent actionEvent) {
+    public void addAction(ActionEvent actionEvent) throws IOException {
+
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/prodotto/insertProdotto.fxml")));
+
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        dialogStage.setTitle("Insert Prodotto");
+
+        Scene scene = new Scene(root);
+        dialogStage.setScene(scene);
+
+        dialogStage.showAndWait();
+        refreshTable();
+    }
+
+    private void refreshTable() {
+        try {
+            prodottoTableView.clear();
+            List<Prodotto> resultSet = getGestioneAcquisti().getProdotti();
+            prodottoTableView.addAll(resultSet);
+            tableView.setItems(prodottoTableView);
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void updateProdotto(ActionEvent actionEvent) {
 
     }
 
-    public void updateFornitore(ActionEvent actionEvent) {
-
-    }
-
-    public void deleteFornitore(ActionEvent actionEvent) {
+    public void deleteProdotto(ActionEvent actionEvent) {
 
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UIUtil.inizializzaFinestra(homeTreeView);
+        choiceItem.getItems().addAll("Codice", "Tipo", "Quantita Necessaria", "Tutti");
+        choiceItem.setOnAction(this::getSelectedCriterio);
+        loadDate();
+        tableView.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
+                Prodotto prodotto = tableView.getSelectionModel().getSelectedItem();
+                if (prodotto != null) {
+                    selectedProdotto = prodotto;
+                }
+            }
+        });
+    }
+
+    private void loadDate() {
+        refreshTable();
+        codice.setCellValueFactory(new PropertyValueFactory<>("CodProdotto"));
+        tipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        quantita.setCellValueFactory(new PropertyValueFactory<>("quantitaNecessaria"));
+        tableView.setItems(prodottoTableView);
+    }
+
+    private void getSelectedCriterio(ActionEvent actionEvent) {
+        criterio = choiceItem.getValue();
+        if(criterio.equals("Tutti")){
+            prodottoTableView.clear();
+            prodottoTableView.addAll(getGestioneAcquisti().getProdotti());
+            tableView.refresh();
+        }
     }
 }

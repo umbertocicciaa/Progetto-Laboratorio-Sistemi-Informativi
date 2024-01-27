@@ -8,13 +8,16 @@ import java.util.ResourceBundle;
 
 public class UpdateProdottoController implements Initializable {
     public void handleOkButton(ActionEvent actionEvent) {
+
     }
 
     public void handleCancelButton(ActionEvent actionEvent) {
+
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
 
     }
 }
