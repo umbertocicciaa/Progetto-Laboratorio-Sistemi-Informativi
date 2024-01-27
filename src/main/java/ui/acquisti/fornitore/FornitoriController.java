@@ -16,7 +16,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import logic.business.GestioneAcquisti;
 import org.hibernate.HibernateException;
 import ui.UIUtil;
 
@@ -27,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import static logic.BusinessFacade.getGestioneAcquisti;
 import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificate;
 
@@ -53,8 +53,6 @@ public class FornitoriController implements Initializable {
     private Fornitore selectedFornitore;
     private String criterio;
     private final ObservableList<Fornitore> fornitoriTableView = FXCollections.observableArrayList();
-    private final GestioneAcquisti gestioneAcquisti = new GestioneAcquisti() {
-    };
 
 
     @Override
@@ -84,7 +82,7 @@ public class FornitoriController implements Initializable {
     private void refreshTable() {
         try {
             fornitoriTableView.clear();
-            List<Fornitore> resultSet = gestioneAcquisti.getFornitori();
+            List<Fornitore> resultSet =   getGestioneAcquisti().getFornitori();
             fornitoriTableView.addAll(resultSet);
             tableView.setItems(fornitoriTableView);
         } catch (HibernateException ex) {
@@ -131,7 +129,7 @@ public class FornitoriController implements Initializable {
 
     public void deleteFornitore(ActionEvent actionEvent) {
         if (selectedFornitore != null) {
-            gestioneAcquisti.removeFornitore(selectedFornitore.getPiva());
+            getGestioneAcquisti().removeFornitore(selectedFornitore.getPiva());
             selectedFornitore = null;
             refreshTable();
         }
@@ -142,7 +140,7 @@ public class FornitoriController implements Initializable {
         criterio = choiceItem.getValue();
         if(criterio.equals("Tutti")){
             fornitoriTableView.clear();
-            fornitoriTableView.addAll(gestioneAcquisti.getFornitori());
+            fornitoriTableView.addAll(getGestioneAcquisti().getFornitori());
             tableView.refresh();
         }
     }
@@ -192,22 +190,22 @@ public class FornitoriController implements Initializable {
             switch (criterio) {
                 case "Partita IVA" -> {
                     fornitoriTableView.clear();
-                    fornitoriTableView.addAll(gestioneAcquisti.fornitoriDiUnaPartitaIva(text));
+                    fornitoriTableView.addAll(getGestioneAcquisti().fornitoriDiUnaPartitaIva(text));
                     tableView.refresh();
                 }
                 case "Nome" -> {
                     fornitoriTableView.clear();
-                    fornitoriTableView.addAll(gestioneAcquisti.fornitoriDiUnNome(text));
+                    fornitoriTableView.addAll(getGestioneAcquisti().fornitoriDiUnNome(text));
                     tableView.refresh();
                 }
                 case "Citta" -> {
                     fornitoriTableView.clear();
-                    fornitoriTableView.addAll(gestioneAcquisti.fornitoriDiUnaCitta(text));
+                    fornitoriTableView.addAll(getGestioneAcquisti().fornitoriDiUnaCitta(text));
                     tableView.refresh();
                 }
                 case "Tutti" -> {
                     fornitoriTableView.clear();
-                    fornitoriTableView.addAll(gestioneAcquisti.getFornitori());
+                    fornitoriTableView.addAll(getGestioneAcquisti().getFornitori());
                     tableView.refresh();
                 }
             }

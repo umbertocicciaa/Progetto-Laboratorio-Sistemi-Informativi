@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 public class AddProdottoController implements Initializable {
     public void handleOkButton(ActionEvent actionEvent) {
+
     }
 
     public void handleCancelButton(ActionEvent actionEvent) {
