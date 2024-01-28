@@ -50,7 +50,7 @@ public class ProdottoController implements Initializable {
     private String criterio;
     private final ObservableList<Prodotto> prodottoTableView = FXCollections.observableArrayList();
 
-    public void selectItem(MouseEvent event) {
+    public void selectItem(MouseEvent event) throws IOException {
         TreeItem<String> item = homeTreeView.getSelectionModel().getSelectedItem();
         if (item != null) {
             switch (item.getValue()) {
@@ -66,8 +66,11 @@ public class ProdottoController implements Initializable {
                     }
                 }
                 case "Automezzo Da Ordinare" -> {
-                    // Handle Automezzo Da Ordinare case
-                    System.out.println("Handling Automezzo Da Ordinare case");
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/automezzo.fxml")));
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
                 }
                 case "Ordine" -> {
                     // Handle Ordine case

@@ -42,8 +42,11 @@ public class Controller implements Initializable {
                     stage.show();
                 }
                 case "Automezzo Da Ordinare" -> {
-                    // Handle Automezzo Da Ordinare case
-                    System.out.println("Handling Automezzo Da Ordinare case");
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/automezzo.fxml")));
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
                 }
                 case "Prodotto Da Ordinare" -> {
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/prodotto/prodotto.fxml")));

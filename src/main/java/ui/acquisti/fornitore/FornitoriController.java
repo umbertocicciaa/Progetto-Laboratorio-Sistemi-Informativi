@@ -145,13 +145,16 @@ public class FornitoriController implements Initializable {
         }
     }
 
-    public void selectItem(MouseEvent contextMenuEvent) {
+    public void selectItem(MouseEvent contextMenuEvent) throws IOException {
         TreeItem<String> item =homeTreeView.getSelectionModel().getSelectedItem();
         if (item != null) {
             switch (item.getValue()) {
                 case "Automezzo Da Ordinare" -> {
-                    // Handle Automezzo Da Ordinare case
-                    System.out.println("Handling Automezzo Da Ordinare case");
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/automezzo.fxml")));
+                    Stage stage = (Stage) ((Node) contextMenuEvent.getSource()).getScene().getWindow();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
                 }
                 case "Prodotto Da Ordinare" -> {
                     try {
