@@ -171,8 +171,15 @@ public class AutomezzoController implements Initializable {
                     }
                 }
                 case "Ordine" -> {
-                    // Handle Ordine case
-                    System.out.println("Handling Ordine case");
+                    try {
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/ordine/ordine.fxml")));
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
                 case "Preventivo" -> {
                     // Handle Preventivo case

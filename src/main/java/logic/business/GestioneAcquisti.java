@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static ui.UIUtil.messaggioErroreCancellazione;
+
 /**
  * @author umbertodomenicociccia
  */
@@ -99,7 +101,7 @@ public interface GestioneAcquisti {
             session.getTransaction().commit();
             session.beginTransaction();
             Query<Prodotto> query = session.createNativeQuery("select count(*) from Prodotto", Prodotto.class);
-            int numeriProdotti=query.getFirstResult();
+            int numeriProdotti = query.getFirstResult();
             System.out.println(numeriProdotti);
             if (numeriProdotti == 0) {
                 Query<Prodotto> reset = session.createNativeQuery("ALTER TABLE Prodotto auto_increment = 1", Prodotto.class);
@@ -108,6 +110,7 @@ public interface GestioneAcquisti {
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
+            messaggioErroreCancellazione("Prodotto");
         }
     }
 
@@ -170,6 +173,7 @@ public interface GestioneAcquisti {
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
+            messaggioErroreCancellazione("Automezzo");
         }
     }
 
@@ -339,6 +343,63 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Query<Ordine> query = session.createNamedQuery("Ordine.findAll", Ordine.class);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
+
+    default List<Ordine> getOrdineByNumero(int numero) {
+        List<Ordine> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Ordine> query = session.createNamedQuery("Ordine.findByNumero", Ordine.class);
+            query.setParameter("numero", numero);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
+    default List<Ordine> getOrdineByStato(String stato) {
+        List<Ordine> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Ordine> query = session.createNamedQuery("Ordine.findByStato", Ordine.class);
+            query.setParameter("stato", stato);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
+    default List<Ordine> getOrdineByData(Date data) {
+        List<Ordine> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Ordine> query = session.createNamedQuery("Ordine.findByData", Ordine.class);
+            query.setParameter("data", data);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
+    default List<Ordine> getOrdineByQuantita(int quantita) {
+        List<Ordine> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Ordine> query = session.createNamedQuery("Ordine.findByQuantita", Ordine.class);
+            query.setParameter("quantita", quantita);
             res.addAll(query.getResultList());
             session.getTransaction().commit();
         } catch (HibernateException exception) {

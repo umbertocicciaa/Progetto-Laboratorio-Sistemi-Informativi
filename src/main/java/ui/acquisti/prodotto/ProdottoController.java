@@ -50,7 +50,7 @@ public class ProdottoController implements Initializable {
     private String criterio;
     private final ObservableList<Prodotto> prodottoTableView = FXCollections.observableArrayList();
 
-    public void selectItem(MouseEvent event) throws IOException {
+    public void selectItem(MouseEvent event) {
         TreeItem<String> item = homeTreeView.getSelectionModel().getSelectedItem();
         if (item != null) {
             switch (item.getValue()) {
@@ -66,15 +66,26 @@ public class ProdottoController implements Initializable {
                     }
                 }
                 case "Automezzo Da Ordinare" -> {
-                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/automezzo.fxml")));
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
+                    try {
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/automezzo.fxml")));
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
                 case "Ordine" -> {
-                    // Handle Ordine case
-                    System.out.println("Handling Ordine case");
+                    try {
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/ordine/ordine.fxml")));
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
                 case "Preventivo" -> {
                     // Handle Preventivo case

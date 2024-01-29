@@ -82,7 +82,7 @@ public class FornitoriController implements Initializable {
     private void refreshTable() {
         try {
             fornitoriTableView.clear();
-            List<Fornitore> resultSet =   getGestioneAcquisti().getFornitori();
+            List<Fornitore> resultSet = getGestioneAcquisti().getFornitori();
             fornitoriTableView.addAll(resultSet);
             tableView.setItems(fornitoriTableView);
         } catch (HibernateException ex) {
@@ -138,23 +138,27 @@ public class FornitoriController implements Initializable {
 
     public void getSelectedCriterio(ActionEvent event) {
         criterio = choiceItem.getValue();
-        if(criterio.equals("Tutti")){
+        if (criterio.equals("Tutti")) {
             fornitoriTableView.clear();
             fornitoriTableView.addAll(getGestioneAcquisti().getFornitori());
             tableView.refresh();
         }
     }
 
-    public void selectItem(MouseEvent contextMenuEvent) throws IOException {
-        TreeItem<String> item =homeTreeView.getSelectionModel().getSelectedItem();
+    public void selectItem(MouseEvent contextMenuEvent) {
+        TreeItem<String> item = homeTreeView.getSelectionModel().getSelectedItem();
         if (item != null) {
             switch (item.getValue()) {
                 case "Automezzo Da Ordinare" -> {
-                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/automezzo.fxml")));
-                    Stage stage = (Stage) ((Node) contextMenuEvent.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
+                    try {
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/automezzo.fxml")));
+                        Stage stage = (Stage) ((Node) contextMenuEvent.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
                 case "Prodotto Da Ordinare" -> {
                     try {
@@ -163,13 +167,20 @@ public class FornitoriController implements Initializable {
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
                         stage.show();
-                    }catch (Exception exception){
+                    } catch (Exception exception) {
                         exception.printStackTrace();
                     }
                 }
                 case "Ordine" -> {
-                    // Handle Ordine case
-                    System.out.println("Handling Ordine case");
+                    try {
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/ordine/ordine.fxml")));
+                        Stage stage = (Stage) ((Node) contextMenuEvent.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
                 case "Preventivo" -> {
                     // Handle Preventivo case
@@ -184,7 +195,7 @@ public class FornitoriController implements Initializable {
 
     public void searchFornitori() {
         String text = ricercaFornitore.getText();
-        if(!stringheVerificate(text)){
+        if (!stringheVerificate(text)) {
             messaggioParametriScorretti();
             return;
         }

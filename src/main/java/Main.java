@@ -22,7 +22,6 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         SessionFactory factory = HibernateFactory.ISTANCE.getSessionFactory();
-
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));
         stage.setTitle("Consorzio Autolinee Cosenza");
         stage.setScene(new Scene(root, 700, 400));

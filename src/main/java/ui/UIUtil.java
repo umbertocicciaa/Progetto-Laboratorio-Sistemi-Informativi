@@ -45,4 +45,11 @@ public final class UIUtil {
         errorAlert.setContentText("Hai fornito un " + text + " errato");
         errorAlert.showAndWait();
     }
+
+    public static void messaggioErroreCancellazione(String text) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText("Errore!");
+        errorAlert.setContentText("Hai eliminato un " + text + " utilizzato da un altro elemento");
+        errorAlert.showAndWait();
+    }
 }
