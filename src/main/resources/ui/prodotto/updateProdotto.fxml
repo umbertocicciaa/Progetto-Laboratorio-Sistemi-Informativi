@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<DialogPane prefHeight="120.0" prefWidth="359.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.acquisti.fornitore.UpdateFornitoreController">
+<DialogPane prefHeight="120.0" prefWidth="359.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.acquisti.prodotto.UpdateProdottoController">
     <header>
         <GridPane gridLinesVisible="true" prefHeight="126.0" prefWidth="359.0">
             <columnConstraints>
@@ -17,14 +17,14 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <TextArea fx:id="nomeField" prefHeight="200.0" prefWidth="179.0" GridPane.columnIndex="1" />
-                <TextArea fx:id="cittaField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label text="Nome" textAlignment="CENTER">
+                <TextArea fx:id="tipoField" prefHeight="200.0" prefWidth="179.0" GridPane.columnIndex="1" />
+                <TextArea fx:id="quantitaField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label text="Tipo" textAlignment="CENTER">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label text="Citta" textAlignment="CENTER" GridPane.rowIndex="1">
+                <Label text="Quantita Necessaria" textAlignment="CENTER" GridPane.rowIndex="1">
                     <font>
                         <Font size="14.0" />
                     </font>

@@ -1,18 +1,22 @@
-package ui.acquisti;
+package ui.acquisti.fornitore;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import logic.business.GestioneAcquisti;
 import org.hibernate.HibernateException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static logic.BusinessFacade.getGestioneAcquisti;
+import static ui.UIUtil.messaggioParametriScorretti;
+import static ui.Util.stringheVerificatePossibileEmpty;
+
 /**
  * @author umbertodomenicociccia
- * */
+ */
 public class UpdateFornitoreController implements Initializable {
     @FXML
     private TextArea nomeField;
@@ -24,20 +28,19 @@ public class UpdateFornitoreController implements Initializable {
     private Button cancelButton;
     private String piva;
 
-    private final GestioneAcquisti gestioneAcquisti = new GestioneAcquisti() {
-    };
-
     public void handleOkButton() {
-        String nome = null;
-        String citta = null;
-        if (!nomeField.getText().isEmpty())
-            nome = nomeField.getText();
-        if (!cittaField.getText().isEmpty())
-            citta = cittaField.getText();
-        try {
-            gestioneAcquisti.updateFornitore(piva, nome, citta);
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
+        String nome = nomeField.getText();
+        String citta = cittaField.getText();
+        if (stringheVerificatePossibileEmpty(nome, citta)) {
+            try {
+                if (nome.isEmpty() && citta.isEmpty()) {
+                    messaggioParametriScorretti();
+                    return;
+                }
+                getGestioneAcquisti().updateFornitore(piva, nome.isEmpty() ? null : nome, citta.isEmpty() ? null : citta);
+            } catch (HibernateException ex) {
+                ex.printStackTrace();
+            }
         }
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();

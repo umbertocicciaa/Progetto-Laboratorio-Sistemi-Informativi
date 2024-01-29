@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.acquisti.FornitoriController">
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.acquisti.fornitore.FornitoriController">
     <children>
-        <TreeView fx:id="homeTreeView" onContextMenuRequested="#selectItem" onMouseClicked="#selectItem" prefHeight="400.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        <TreeView fx:id="homeTreeView" onMouseClicked="#selectItem" prefHeight="400.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
         <TextField fx:id="ricercaFornitore" layoutX="200.0" layoutY="40.0" onAction="#searchFornitori" prefHeight="26.0" prefWidth="370.0" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0" />
         <Label layoutX="200.0" layoutY="14.0" text="Ricerca Fornitore" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <font>

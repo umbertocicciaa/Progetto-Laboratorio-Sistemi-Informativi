@@ -139,56 +139,51 @@ public class GestioneAcquistiTest {
 
     @Test
     public void testAddProdotto() {
-        int codice = 1;
         String tipo = "tipo";
         int quantita = 10;
 
-        gestioneAcquisti.addProdotto(codice, tipo, quantita);
-        Prodotto prodotto = gestioneAcquisti.getProdotto(codice);
-        Assertions.assertEquals(prodotto.getCodProdotto(), codice);
-        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.addProdotto( tipo, quantita);
+        Prodotto prodotto = gestioneAcquisti.getProdotto(1);
+        Assertions.assertEquals(prodotto.getCodProdotto(), 1);
+        gestioneAcquisti.removeProdotto(1);
     }
 
     @Test
     public void testRemoveProdotto() {
-        int codice = 1;
         String tipo = "tipo";
         int quantita = 10;
 
-        gestioneAcquisti.addProdotto(codice, tipo, quantita);
-        gestioneAcquisti.removeProdotto(codice);
-        Assertions.assertNull(gestioneAcquisti.getProdotto(codice));
+        gestioneAcquisti.addProdotto(tipo, quantita);
+        gestioneAcquisti.removeProdotto(1);
+        Assertions.assertNull(gestioneAcquisti.getProdotto(1));
     }
 
     @Test
     public void testGetProdotto() {
-        int codice = 1;
         String tipo = "tipo";
         int quantita = 10;
 
-        gestioneAcquisti.addProdotto(codice, tipo, quantita);
-        Prodotto prodotto = gestioneAcquisti.getProdotto(codice);
-        Assertions.assertEquals(prodotto.getCodProdotto(), codice);
-        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.addProdotto( tipo, quantita);
+        Prodotto prodotto = gestioneAcquisti.getProdotto(1);
+        Assertions.assertEquals(prodotto.getCodProdotto(), 1);
+        gestioneAcquisti.removeProdotto(1);
     }
 
     @Test
     public void testUpdateProdotto() {
-        int codice = 1;
         String tipo = "tipo";
         int quantita = 10;
         String tipoNuovo = "ciao";
-        gestioneAcquisti.addProdotto(codice, tipo, quantita);
-        gestioneAcquisti.updateProdotto(codice, tipoNuovo, null);
-        Prodotto prodotto = gestioneAcquisti.getProdotto(codice);
+        gestioneAcquisti.addProdotto( tipo, quantita);
+        gestioneAcquisti.updateProdotto(1, tipoNuovo, null);
+        Prodotto prodotto = gestioneAcquisti.getProdotto(1);
         Assertions.assertEquals(prodotto.getTipo(), tipoNuovo);
-        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.removeProdotto(1);
     }
 
     @Test
     public void testAddPreventivo() {
         //prodotto
-        int codice = 1;
         String tipo = "tipo";
         int quantita = 10;
 
@@ -207,17 +202,17 @@ public class GestioneAcquistiTest {
         BigDecimal costo = new BigDecimal("10.2");
         Date scadenza = new Date(2002, 2, 2), scrittura = new Date(2002, 2, 3);
 
-        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        gestioneAcquisti.addProdotto(tipo, quantita);
         gestioneAcquisti.addFornitore(piva, nome, citta);
         gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
-        gestioneAcquisti.addPreventivo(piva, codice, targa, costo, scadenza, scrittura);
+        gestioneAcquisti.addPreventivo(piva, 1, targa, costo, scadenza, scrittura);
 
-        Preventivo preventivo = gestioneAcquisti.getPreventivo(piva, codice, targa);
-        Assertions.assertEquals(preventivo.getPreventivoPK(), new PreventivoPK(piva, codice, targa));
+        Preventivo preventivo = gestioneAcquisti.getPreventivo(piva, 1, targa);
+        Assertions.assertEquals(preventivo.getPreventivoPK(), new PreventivoPK(piva, 1, targa));
 
-        gestioneAcquisti.removePreventivo(piva, codice, targa);
+        gestioneAcquisti.removePreventivo(piva, 1, targa);
         gestioneAcquisti.removeAutomezzo(targa);
-        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.removeProdotto(1);
         gestioneAcquisti.removeFornitore(piva);
 
     }
@@ -225,7 +220,6 @@ public class GestioneAcquistiTest {
     @Test
     public void testGetPreventivo() {
         //prodotto
-        int codice = 1;
         String tipo = "tipo";
         int quantita = 10;
 
@@ -244,17 +238,17 @@ public class GestioneAcquistiTest {
         BigDecimal costo = new BigDecimal("10.2");
         Date scadenza = new Date(2002, 2, 2), scrittura = new Date(2002, 2, 3);
 
-        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        gestioneAcquisti.addProdotto( tipo, quantita);
         gestioneAcquisti.addFornitore(piva, nome, citta);
         gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
-        gestioneAcquisti.addPreventivo(piva, codice, targa, costo, scadenza, scrittura);
+        gestioneAcquisti.addPreventivo(piva, 1, targa, costo, scadenza, scrittura);
 
-        Preventivo preventivo = gestioneAcquisti.getPreventivo(piva, codice, targa);
-        Assertions.assertEquals(preventivo.getPreventivoPK(), new PreventivoPK(piva, codice, targa));
+        Preventivo preventivo = gestioneAcquisti.getPreventivo(piva, 1, targa);
+        Assertions.assertEquals(preventivo.getPreventivoPK(), new PreventivoPK(piva, 1, targa));
 
-        gestioneAcquisti.removePreventivo(piva, codice, targa);
+        gestioneAcquisti.removePreventivo(piva, 1, targa);
         gestioneAcquisti.removeAutomezzo(targa);
-        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.removeProdotto(1);
         gestioneAcquisti.removeFornitore(piva);
 
     }
@@ -262,7 +256,6 @@ public class GestioneAcquistiTest {
     @Test
     public void testRemovePreventivo() {
         //prodotto
-        int codice = 1;
         String tipo = "tipo";
         int quantita = 10;
 
@@ -281,15 +274,15 @@ public class GestioneAcquistiTest {
         BigDecimal costo = new BigDecimal("10.2");
         Date scadenza = new Date(2002, 2, 2), scrittura = new Date(2002, 2, 3);
 
-        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        gestioneAcquisti.addProdotto( tipo, quantita);
         gestioneAcquisti.addFornitore(piva, nome, citta);
         gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
-        gestioneAcquisti.addPreventivo(piva, codice, targa, costo, scadenza, scrittura);
+        gestioneAcquisti.addPreventivo(piva, 1, targa, costo, scadenza, scrittura);
 
-        gestioneAcquisti.removePreventivo(piva, codice, targa);
-        Assertions.assertNull(gestioneAcquisti.getPreventivo(piva, codice, targa));
+        gestioneAcquisti.removePreventivo(piva, 1, targa);
+        Assertions.assertNull(gestioneAcquisti.getPreventivo(piva, 1, targa));
         gestioneAcquisti.removeAutomezzo(targa);
-        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.removeProdotto(1);
         gestioneAcquisti.removeFornitore(piva);
 
     }
@@ -297,7 +290,6 @@ public class GestioneAcquistiTest {
     @Test
     public void testUpdatePreventivo() {
         //prodotto
-        int codice = 1;
         String tipo = "tipo";
         int quantita = 10;
 
@@ -316,18 +308,18 @@ public class GestioneAcquistiTest {
         BigDecimal costo = new BigDecimal("10.2"), nuovoCosto = new BigDecimal("10.90");
         Date scadenza = new Date(2002, 2, 2), scrittura = new Date(2002, 2, 3);
 
-        gestioneAcquisti.addProdotto(codice, tipo, quantita);
+        gestioneAcquisti.addProdotto( tipo, quantita);
         gestioneAcquisti.addFornitore(piva, nome, citta);
         gestioneAcquisti.addAutomezzo(targa, marca, assicurazione, prezzo);
-        gestioneAcquisti.addPreventivo(piva, codice, targa, costo, scadenza, scrittura);
+        gestioneAcquisti.addPreventivo(piva, 1, targa, costo, scadenza, scrittura);
 
-        gestioneAcquisti.updatePreventivo(piva, codice, targa, nuovoCosto, null, null);
-        Preventivo preventivo = gestioneAcquisti.getPreventivo(piva, codice, targa);
+        gestioneAcquisti.updatePreventivo(piva, 1, targa, nuovoCosto, null, null);
+        Preventivo preventivo = gestioneAcquisti.getPreventivo(piva, 1, targa);
         Assertions.assertEquals(preventivo.getPrezzo(), nuovoCosto);
 
-        gestioneAcquisti.removePreventivo(piva, codice, targa);
+        gestioneAcquisti.removePreventivo(piva, 1, targa);
         gestioneAcquisti.removeAutomezzo(targa);
-        gestioneAcquisti.removeProdotto(codice);
+        gestioneAcquisti.removeProdotto(1);
         gestioneAcquisti.removeFornitore(piva);
 
     }
@@ -496,9 +488,9 @@ public class GestioneAcquistiTest {
         int quantita3 = 5;
 
 
-        gestioneAcquisti.addProdotto(codice, tipo, quantita);
-        gestioneAcquisti.addProdotto(codice2, tipo2, quantita2);
-        gestioneAcquisti.addProdotto(codice3, tipo3, quantita3);
+        gestioneAcquisti.addProdotto( tipo, quantita);
+        gestioneAcquisti.addProdotto( tipo2, quantita2);
+        gestioneAcquisti.addProdotto( tipo3, quantita3);
         List<Prodotto> prodotti = gestioneAcquisti.prodottoNecessitaMAggiore();
         Assertions.assertEquals(prodotti.get(0).getQuantitaNecessaria(), quantita);
         gestioneAcquisti.removeProdotto(codice);

@@ -1,4 +1,4 @@
-package ui.acquisti;
+package ui.acquisti.fornitore;
 
 import data.Fornitore;
 import javafx.collections.FXCollections;
@@ -7,21 +7,28 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import logic.business.GestioneAcquisti;
 import org.hibernate.HibernateException;
 import ui.UIUtil;
+
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
+
+import static logic.BusinessFacade.getGestioneAcquisti;
+import static ui.UIUtil.messaggioParametriScorretti;
+import static ui.Util.stringheVerificate;
 
 /**
  * @author umbertodomenicociccia
@@ -30,9 +37,7 @@ public class FornitoriController implements Initializable {
     @FXML
     private ChoiceBox<String> choiceItem;
     @FXML
-    private Button addButton;
-    @FXML
-    private TreeView homeTreeView;
+    private TreeView<String> homeTreeView;
     @FXML
     private TableView<Fornitore> tableView;
     @FXML
@@ -48,8 +53,6 @@ public class FornitoriController implements Initializable {
     private Fornitore selectedFornitore;
     private String criterio;
     private final ObservableList<Fornitore> fornitoriTableView = FXCollections.observableArrayList();
-    private final GestioneAcquisti gestioneAcquisti = new GestioneAcquisti() {
-    };
 
 
     @Override
@@ -79,7 +82,7 @@ public class FornitoriController implements Initializable {
     private void refreshTable() {
         try {
             fornitoriTableView.clear();
-            List<Fornitore> resultSet = gestioneAcquisti.getFornitori();
+            List<Fornitore> resultSet = getGestioneAcquisti().getFornitori();
             fornitoriTableView.addAll(resultSet);
             tableView.setItems(fornitoriTableView);
         } catch (HibernateException ex) {
@@ -89,7 +92,7 @@ public class FornitoriController implements Initializable {
 
 
     public void addAction() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/acquisti/insertFornitore.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/acquisti/insertFornitore.fxml")));
 
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -126,7 +129,7 @@ public class FornitoriController implements Initializable {
 
     public void deleteFornitore(ActionEvent actionEvent) {
         if (selectedFornitore != null) {
-            gestioneAcquisti.removeFornitore(selectedFornitore.getPiva());
+            getGestioneAcquisti().removeFornitore(selectedFornitore.getPiva());
             selectedFornitore = null;
             refreshTable();
         }
@@ -134,85 +137,54 @@ public class FornitoriController implements Initializable {
 
 
     public void getSelectedCriterio(ActionEvent event) {
-        criterio = choiceItem.getValue().toString();
-        System.out.println(criterio);
+        criterio = choiceItem.getValue();
+        if (criterio.equals("Tutti")) {
+            fornitoriTableView.clear();
+            fornitoriTableView.addAll(getGestioneAcquisti().getFornitori());
+            tableView.refresh();
+        }
     }
 
-    public void selectItem() {
-        TreeItem<String> item = (TreeItem<String>) homeTreeView.getSelectionModel().getSelectedItem();
+    public void selectItem(MouseEvent contextMenuEvent) {
+        TreeItem<String> item = homeTreeView.getSelectionModel().getSelectedItem();
         if (item != null) {
             switch (item.getValue()) {
-                case "Corsa" -> {
-                    // Handle Corsa case
-                    System.out.println("Handling Corsa case");
-                }
-                case "Fermata" -> {
-                    // Handle Fermata case
-                    System.out.println("Handling Fermata case");
-                }
-                case "Transazione" -> {
-                    // Handle Transazione case
-                    System.out.println("Handling Transazione case");
-                }
-                case "Fattura" -> {
-                    // Handle Fattura case
-                    System.out.println("Handling Fattura case");
-                }
-                case "Conto" -> {
-                    // Handle Conto case
-                    System.out.println("Handling Conto case");
-                }
-                case "Bene" -> {
-                    // Handle Bene case
-                    System.out.println("Handling Bene case");
-                }
                 case "Automezzo Da Ordinare" -> {
-                    // Handle Automezzo Da Ordinare case
-                    System.out.println("Handling Automezzo Da Ordinare case");
+                    try {
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/automezzo.fxml")));
+                        Stage stage = (Stage) ((Node) contextMenuEvent.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
                 case "Prodotto Da Ordinare" -> {
-                    // Handle Prodotto Da Ordinare case
-                    System.out.println("Handling Prodotto Da Ordinare case");
+                    try {
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/prodotto/prodotto.fxml")));
+                        Stage stage = (Stage) ((Node) contextMenuEvent.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
                 case "Ordine" -> {
-                    // Handle Ordine case
-                    System.out.println("Handling Ordine case");
+                    try {
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/ordine/ordine.fxml")));
+                        Stage stage = (Stage) ((Node) contextMenuEvent.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
                 case "Preventivo" -> {
                     // Handle Preventivo case
                     System.out.println("Handling Preventivo case");
-                }
-                case "Dipendenti" -> {
-                    // Handle Dipendenti case
-                    System.out.println("Handling Dipendenti case");
-                }
-                case "Turno" -> {
-                    // Handle Turno case
-                    System.out.println("Handling Turno case");
-                }
-                case "Requisito minimo candidatura" -> {
-                    // Handle Requisito minimo candidatura case
-                    System.out.println("Handling Requisito minimo candidatura case");
-                }
-                case "Posti vacanti" -> {
-                    // Handle Posti vacanti case
-                    System.out.println("Handling Posti vacanti case");
-                }
-                case "Ruolo" -> {
-                    // Handle Ruolo case
-                    System.out.println("Handling Ruolo case");
-                }
-                case "Dipartimento" -> {
-                    // Handle Dipartimento case
-                    System.out.println("Handling Dipartimento case");
-                }
-                case "Richiesta Cliente" -> {
-                    // Handle Richiesta Cliente case
-                    System.out.println("Handling Richiesta Cliente case");
-                }
-                case "Cliente" -> {
-                    // Handle Cliente case
-                    System.out.println("Handling Cliente case");
                 }
                 default -> {
                 }
@@ -223,31 +195,34 @@ public class FornitoriController implements Initializable {
 
     public void searchFornitori() {
         String text = ricercaFornitore.getText();
+        if (!stringheVerificate(text)) {
+            messaggioParametriScorretti();
+            return;
+        }
         System.out.println(text);
         if (criterio != null) {
             switch (criterio) {
                 case "Partita IVA" -> {
                     fornitoriTableView.clear();
-                    fornitoriTableView.addAll(gestioneAcquisti.fornitoriDiUnaPartitaIva(text));
+                    fornitoriTableView.addAll(getGestioneAcquisti().fornitoriDiUnaPartitaIva(text));
                     tableView.refresh();
                 }
                 case "Nome" -> {
                     fornitoriTableView.clear();
-                    fornitoriTableView.addAll(gestioneAcquisti.fornitoriDiUnNome(text));
+                    fornitoriTableView.addAll(getGestioneAcquisti().fornitoriDiUnNome(text));
                     tableView.refresh();
                 }
                 case "Citta" -> {
                     fornitoriTableView.clear();
-                    fornitoriTableView.addAll(gestioneAcquisti.fornitoriDiUnaCitta(text));
+                    fornitoriTableView.addAll(getGestioneAcquisti().fornitoriDiUnaCitta(text));
                     tableView.refresh();
                 }
                 case "Tutti" -> {
                     fornitoriTableView.clear();
-                    fornitoriTableView.addAll(gestioneAcquisti.getFornitori());
+                    fornitoriTableView.addAll(getGestioneAcquisti().getFornitori());
                     tableView.refresh();
                 }
             }
         }
-
     }
 }

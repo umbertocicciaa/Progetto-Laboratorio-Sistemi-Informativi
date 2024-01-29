@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static ui.UIUtil.messaggioErroreCancellazione;
+
 /**
  * @author umbertodomenicociccia
  */
@@ -81,10 +83,10 @@ public interface GestioneAcquisti {
         return fornitori;
     }
 
-    default void addProdotto(int codice, @NotNull String tipo, int quantitaNecessaria) {
+    default void addProdotto(@NotNull String tipo, int quantitaNecessaria) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.persist(new Prodotto(codice, tipo, quantitaNecessaria));
+            session.persist(new Prodotto(tipo, quantitaNecessaria));
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
@@ -97,10 +99,21 @@ public interface GestioneAcquisti {
             Prodotto prodotto = session.get(Prodotto.class, codice);
             session.remove(prodotto);
             session.getTransaction().commit();
+            session.beginTransaction();
+            Query<Prodotto> query = session.createNativeQuery("select count(*) from Prodotto", Prodotto.class);
+            int numeriProdotti = query.getFirstResult();
+            System.out.println(numeriProdotti);
+            if (numeriProdotti == 0) {
+                Query<Prodotto> reset = session.createNativeQuery("ALTER TABLE Prodotto auto_increment = 1", Prodotto.class);
+                reset.executeUpdate();
+            }
+            session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
+            messaggioErroreCancellazione("Prodotto");
         }
     }
+
 
     default Prodotto getProdotto(int codice) {
         Prodotto prodotto = null;
@@ -129,7 +142,7 @@ public interface GestioneAcquisti {
         }
     }
 
-    default List<Prodotto> getProdotto() {
+    default List<Prodotto> getProdotti() {
         List<Prodotto> res = new ArrayList<>();
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -160,6 +173,7 @@ public interface GestioneAcquisti {
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
+            messaggioErroreCancellazione("Automezzo");
         }
     }
 
@@ -337,6 +351,63 @@ public interface GestioneAcquisti {
         return res;
     }
 
+
+    default List<Ordine> getOrdineByNumero(int numero) {
+        List<Ordine> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Ordine> query = session.createNamedQuery("Ordine.findByNumero", Ordine.class);
+            query.setParameter("numero", numero);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
+    default List<Ordine> getOrdineByStato(String stato) {
+        List<Ordine> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Ordine> query = session.createNamedQuery("Ordine.findByStato", Ordine.class);
+            query.setParameter("stato", stato);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
+    default List<Ordine> getOrdineByData(Date data) {
+        List<Ordine> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Ordine> query = session.createNamedQuery("Ordine.findByData", Ordine.class);
+            query.setParameter("data", data);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
+    default List<Ordine> getOrdineByQuantita(int quantita) {
+        List<Ordine> res = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Ordine> query = session.createNamedQuery("Ordine.findByQuantita", Ordine.class);
+            query.setParameter("quantita", quantita);
+            res.addAll(query.getResultList());
+            session.getTransaction().commit();
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        }
+        return res;
+    }
+
     default List<Fornitore> fornitoriDiUnaCitta(@NotNull String citta) {
         List<Fornitore> fornitori = new ArrayList<>();
         try (Session session = sessionFactory.openSession()) {
@@ -440,7 +511,7 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Query<Prodotto> query = session.createNamedQuery("Prodotto.findByCodProdotto", Prodotto.class);
-            query.setParameter("codice", codice);
+            query.setParameter("codProdotto", codice);
             prodotti.addAll(query.getResultList());
             session.getTransaction().commit();
         } catch (Exception exception) {
