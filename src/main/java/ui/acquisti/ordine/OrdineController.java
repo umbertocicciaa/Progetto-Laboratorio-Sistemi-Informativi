@@ -107,8 +107,25 @@ public class OrdineController implements Initializable {
         }
     }
 
-    public void updateOrdine(ActionEvent actionEvent) {
+    public void updateOrdine(ActionEvent actionEvent) throws IOException {
+        if (selectedOrdine != null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/ordine/updateOrdine.fxml"));
+            Parent root = loader.load();
 
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Update Prodotto");
+
+            Scene scene = new Scene(root);
+            dialogStage.setScene(scene);
+            UpdateOrdineController controller = loader.getController();
+            controller.initOrdine(selectedOrdine.getNumero());
+
+            dialogStage.showAndWait();
+            refreshTable();
+            selectedOrdine = null;
+            refreshTable();
+        }
     }
 
     public void deleteOrdine(ActionEvent actionEvent) {
