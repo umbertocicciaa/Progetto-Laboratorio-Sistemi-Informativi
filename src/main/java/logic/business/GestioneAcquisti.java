@@ -69,6 +69,7 @@ public interface GestioneAcquisti {
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
+            messaggioErroreAggiornamento("Fornitore");
         }
     }
 
@@ -92,6 +93,7 @@ public interface GestioneAcquisti {
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
+            messaggioErroreInserimento("prodotto");
         }
     }
 
@@ -141,6 +143,7 @@ public interface GestioneAcquisti {
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
+            messaggioErroreAggiornamento("prodotto");
         }
     }
 
@@ -308,6 +311,7 @@ public interface GestioneAcquisti {
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
+            messaggioErroreCancellazione("ordine");
         }
     }
 
@@ -324,6 +328,7 @@ public interface GestioneAcquisti {
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
+            messaggioErroreAggiornamento("ordine");
         }
     }
 
@@ -552,10 +557,4 @@ public interface GestioneAcquisti {
         }
         return prodotti;
     }
-
-    /*
-     * Filtra prodotto necessita maggiore
-     * */
-
-
 }
