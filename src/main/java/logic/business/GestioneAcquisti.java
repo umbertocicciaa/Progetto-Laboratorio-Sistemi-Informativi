@@ -1,7 +1,7 @@
 package logic.business;
 
 import data.*;
-import logic.HibernateFactory;
+import logic.HibernateSingleton;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,7 +20,7 @@ import static ui.UIUtil.messaggioErroreCancellazione;
  */
 @SuppressWarnings("CallToPrintStackTrace")
 public interface GestioneAcquisti {
-    SessionFactory sessionFactory = HibernateFactory.ISTANCE.getSessionFactory();
+    SessionFactory sessionFactory = HibernateSingleton.ISTANCE.getSessionFactory();
 
     default void addFornitore(@NotNull String piva, @NotNull String nome, @NotNull String citta) {
         try (Session session = sessionFactory.openSession()) {

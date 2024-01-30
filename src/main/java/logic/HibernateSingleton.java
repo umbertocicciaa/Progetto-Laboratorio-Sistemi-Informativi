@@ -7,11 +7,11 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 /**
  * @author umbertodomenicociccia
  */
-public enum HibernateFactory {
+public enum HibernateSingleton {
     ISTANCE;
     private SessionFactory sessionFactory;
 
-    HibernateFactory() {
+    HibernateSingleton() {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure() // configures settings from hibernate.cfg.xml
                 .build();

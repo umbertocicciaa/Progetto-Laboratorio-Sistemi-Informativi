@@ -1,11 +1,11 @@
 package ui.acquisti.automezzo;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -37,7 +37,7 @@ public class AddAutomezzoController implements Initializable {
 
     }
 
-    public void handleOkButton(ActionEvent actionEvent) {
+    public void handleOkButton() {
         String targa = targaField.getText();
         String marca = marcaField.getText();
         String prezzo = prezzoField.getText();
@@ -50,7 +50,7 @@ public class AddAutomezzoController implements Initializable {
         try {
             getGestioneAcquisti().addAutomezzo(targa,marca,assicurazione,BigDecimal.valueOf(Double.parseDouble(prezzo)));
             closeStage();
-        } catch (Exception ex) {
+        } catch (HibernateException ex) {
             ex.printStackTrace();
             messaggioErroreInserimento("Prodotto");
         }
@@ -71,7 +71,7 @@ public class AddAutomezzoController implements Initializable {
         }
     }
 
-    public void handleCancelButton(ActionEvent actionEvent) {
+    public void handleCancelButton() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }

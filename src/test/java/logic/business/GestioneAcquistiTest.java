@@ -1,18 +1,14 @@
 package logic.business;
 
 import data.*;
-import logic.HibernateFactory;
-import org.hibernate.Session;
+import logic.HibernateSingleton;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +21,7 @@ public class GestioneAcquistiTest {
 
     @BeforeAll
     public static void setUp() {
-        sessionFactory = HibernateFactory.ISTANCE.getSessionFactory();
+        sessionFactory = HibernateSingleton.ISTANCE.getSessionFactory();
         gestioneAcquisti = new GestioneAcquisti() {
         };
     }
