@@ -1,6 +1,5 @@
 package ui.acquisti.prodotto;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -24,7 +23,7 @@ public class UpdateProdottoController implements Initializable {
     private TextArea quantitaField;
     private int codice;
 
-    public void handleOkButton(ActionEvent actionEvent) {
+    public void handleOkButton() {
         String tipo = tipoField.getText();
         String quantita = quantitaField.getText();
 
@@ -54,7 +53,7 @@ public class UpdateProdottoController implements Initializable {
         stage.close();
     }
 
-    public void handleCancelButton(ActionEvent actionEvent) {
+    public void handleCancelButton() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }

@@ -1,6 +1,5 @@
 package ui.acquisti.ordine;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -49,7 +48,7 @@ public class AddOrdineController implements Initializable {
 
     }
 
-    public void viewProdotti(ActionEvent event) throws IOException {
+    public void viewProdotti() throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/ordine/visualizzaProdotti.fxml")));
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -60,7 +59,7 @@ public class AddOrdineController implements Initializable {
         dialogStage.showAndWait();
     }
 
-    public void viewAutomezzi(ActionEvent event) throws IOException {
+    public void viewAutomezzi() throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/ordine/visualizzaAutomezzi.fxml")));
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -71,7 +70,7 @@ public class AddOrdineController implements Initializable {
         dialogStage.showAndWait();
     }
 
-    public void okButton(ActionEvent actionEvent) {
+    public void okButton() {
         String numero = numeroField.getText();
         String stato = statoField.getText();
         String quantita = quantitaField.getText();
@@ -79,7 +78,7 @@ public class AddOrdineController implements Initializable {
         String automezzo = automezzoField.getText();
         LocalDate data = dataField.getValue();
 
-        if (!stringheVerificate(stato) || !stringheVerificatePossibileEmpty(prodotto, automezzo) || !isStatoValido(stato) || !validoNumero(numero) || !validoNumero(quantita)) {
+        if (!stringheVerificate(stato) || !stringheVerificatePossibileEmpty(prodotto, automezzo) || !isStatoValido(stato) || !isValidoNumero(numero) || !isValidoNumero(quantita)) {
             messaggioParametriScorretti();
             return;
         }
@@ -91,7 +90,6 @@ public class AddOrdineController implements Initializable {
             int prod = Integer.parseInt(prodotto);
             getGestioneAcquisti().addOrdine(nume, stato, date, quantit, prod, automezzo);
         } catch (Exception ex) {
-            ex.printStackTrace();
             messaggioErroreInserimento("Prodotto");
         }
         Stage stage = (Stage) cancel.getScene().getWindow();
@@ -108,17 +106,16 @@ public class AddOrdineController implements Initializable {
         return "lavorazione".equalsIgnoreCase(stato) || "chiuso".equalsIgnoreCase(stato) || "aperto".equalsIgnoreCase(stato);
     }
 
-    private boolean validoNumero(String numero) {
+    private boolean isValidoNumero(String numero) {
         try {
-            int num = Integer.parseInt(numero);
+           Integer.parseInt(numero);
             return true;
         } catch (NumberFormatException excp) {
-            excp.printStackTrace();
             return false;
         }
     }
 
-    public void cancelButton(ActionEvent actionEvent) {
+    public void cancelButton() {
         Stage stage = (Stage) cancel.getScene().getWindow();
         stage.close();
     }

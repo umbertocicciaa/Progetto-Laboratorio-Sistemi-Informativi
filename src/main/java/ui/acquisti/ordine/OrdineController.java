@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -37,8 +36,6 @@ public class OrdineController implements Initializable {
     private TreeView<String> homeTreeView;
     @FXML
     private TextField ricercaOrdine;
-    @FXML
-    private Button addButton;
     @FXML
     private ChoiceBox<String> choiceItem;
     @FXML
@@ -107,7 +104,7 @@ public class OrdineController implements Initializable {
         }
     }
 
-    public void updateOrdine(ActionEvent actionEvent) throws IOException {
+    public void updateOrdine() throws IOException {
         if (selectedOrdine != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/ordine/updateOrdine.fxml"));
             Parent root = loader.load();
@@ -128,7 +125,7 @@ public class OrdineController implements Initializable {
         }
     }
 
-    public void deleteOrdine(ActionEvent actionEvent) {
+    public void deleteOrdine() {
         if (selectedOrdine != null) {
             getGestioneAcquisti().removeOrdine(selectedOrdine.getNumero());
             selectedOrdine = null;
@@ -136,7 +133,7 @@ public class OrdineController implements Initializable {
         }
     }
 
-    public void addAction(ActionEvent actionEvent) {
+    public void addAction() {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/ordine/insertOrdine.fxml")));
 
@@ -154,46 +151,12 @@ public class OrdineController implements Initializable {
         }
     }
 
-    public void selectItem(MouseEvent event) throws IOException {
+    public void selectItem(MouseEvent event){
         TreeItem<String> item = homeTreeView.getSelectionModel().getSelectedItem();
-        if (item != null) {
-            switch (item.getValue()) {
-                case "Fornitore" -> {
-                    try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/acquisti/fornitori.fxml")));
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-                case "Automezzo Da Ordinare" -> {
-                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/automezzo.fxml")));
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                }
-                case "Prodotto Da Ordinare" -> {
-                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/prodotto/prodotto.fxml")));
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                }
-                case "Preventivo" -> {
-                    // Handle Preventivo case
-                    System.out.println("Handling Preventivo case");
-                }
-                default -> {
-                }
-            }
-        }
+        UIUtil.loadSelectedItem(item, event);
     }
 
-    public void searchOrdine(ActionEvent actionEvent) {
+    public void searchOrdine() {
         String text = ricercaOrdine.getText();
         if (!stringheVerificate(text)) {
             messaggioParametriScorretti();
@@ -208,7 +171,6 @@ public class OrdineController implements Initializable {
                         ordineTableView.addAll(getGestioneAcquisti().getOrdineByNumero(codice));
                         tableView.refresh();
                     }catch (NumberFormatException exception){
-                        exception.printStackTrace();
                         messaggioParametriScorretti();
                     }
                 }
@@ -227,7 +189,6 @@ public class OrdineController implements Initializable {
                         ordineTableView.addAll(getGestioneAcquisti().getOrdineByData(date));
                         tableView.refresh();
                     }catch (ParseException e) {
-                        e.printStackTrace();
                         messaggioParametriScorretti();
                     }
                 }
@@ -238,7 +199,6 @@ public class OrdineController implements Initializable {
                         ordineTableView.addAll(getGestioneAcquisti().getOrdineByQuantita(quantita));
                         tableView.refresh();
                     }catch (NumberFormatException exception){
-                        exception.printStackTrace();
                         messaggioParametriScorretti();
                     }
                 }

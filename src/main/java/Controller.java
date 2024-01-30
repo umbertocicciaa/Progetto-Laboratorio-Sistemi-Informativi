@@ -63,11 +63,6 @@ public class Controller implements Initializable {
                     stage.setScene(scene);
                     stage.show();
                 }
-                case "Preventivo" -> {
-                    // Handle Preventivo case
-                    System.out.println("Handling Preventivo case");
-                }
-
                 default -> {
                 }
             }

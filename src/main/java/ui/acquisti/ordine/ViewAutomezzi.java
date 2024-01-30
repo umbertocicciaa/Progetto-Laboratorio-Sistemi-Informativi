@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import org.hibernate.HibernateException;
 
 import java.net.URL;
@@ -15,6 +14,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
+import static ui.UIUtil.loadAutomezzoTable;
 
 public class ViewAutomezzi implements Initializable {
 
@@ -33,11 +33,7 @@ public class ViewAutomezzi implements Initializable {
 
     private void loadDateAutomezzo() {
         refreshTableAutomezzo();
-        targa.setCellValueFactory(new PropertyValueFactory<>("targa"));
-        marca.setCellValueFactory(new PropertyValueFactory<>("marca"));
-        assicurazione.setCellValueFactory(new PropertyValueFactory<>("assicurazione"));
-        prezzo.setCellValueFactory(new PropertyValueFactory<>("prezzo"));
-        automezzi.setItems(automezzoTableView);
+        loadAutomezzoTable(targa, marca, assicurazione, prezzo, automezzi, automezzoTableView);
     }
 
     private void refreshTableAutomezzo() {

@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -52,52 +51,10 @@ public class ProdottoController implements Initializable {
 
     public void selectItem(MouseEvent event) {
         TreeItem<String> item = homeTreeView.getSelectionModel().getSelectedItem();
-        if (item != null) {
-            switch (item.getValue()) {
-                case "Fornitore" -> {
-                    try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/acquisti/fornitori.fxml")));
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-                case "Automezzo Da Ordinare" -> {
-                    try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/automezzo.fxml")));
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-                case "Ordine" -> {
-                    try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/ordine/ordine.fxml")));
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-                case "Preventivo" -> {
-                    // Handle Preventivo case
-                    System.out.println("Handling Preventivo case");
-                }
-                default -> {
-                }
-            }
-        }
+        UIUtil.loadSelectedItem(item, event);
     }
 
-    public void searchProdotto(ActionEvent actionEvent) {
+    public void searchProdotto() {
         String text = ricercaProdotto.getText();
         if (!stringheVerificate(text)) {
             messaggioParametriScorretti();
@@ -113,7 +70,6 @@ public class ProdottoController implements Initializable {
                         prodottoTableView.addAll(getGestioneAcquisti().prodottiDiUnCodice(codice));
                         tableView.refresh();
                     } catch (NumberFormatException exception) {
-                        exception.printStackTrace();
                         messaggioParametriScorretti();
                     }
                 }
@@ -129,7 +85,6 @@ public class ProdottoController implements Initializable {
                         prodottoTableView.addAll(getGestioneAcquisti().prodottiDiUnaNecessita(quantita));
                         tableView.refresh();
                     } catch (NumberFormatException exception) {
-                        exception.printStackTrace();
                         messaggioParametriScorretti();
                     }
                 }
@@ -142,7 +97,7 @@ public class ProdottoController implements Initializable {
         }
     }
 
-    public void addAction(ActionEvent actionEvent) throws IOException {
+    public void addAction() throws IOException {
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/prodotto/insertProdotto.fxml")));
 
@@ -168,7 +123,7 @@ public class ProdottoController implements Initializable {
         }
     }
 
-    public void updateProdotto(ActionEvent actionEvent) throws IOException {
+    public void updateProdotto() throws IOException {
         if (selectedProdotto != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/prodotto/updateProdotto.fxml"));
             Parent root = loader.load();
@@ -189,7 +144,7 @@ public class ProdottoController implements Initializable {
         }
     }
 
-    public void deleteProdotto(ActionEvent actionEvent) {
+    public void deleteProdotto() {
         if (selectedProdotto != null) {
             getGestioneAcquisti().removeProdotto(selectedProdotto.getCodProdotto());
             selectedProdotto = null;

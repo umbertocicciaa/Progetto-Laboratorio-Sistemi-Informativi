@@ -7,11 +7,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
@@ -27,6 +25,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
+import static ui.UIUtil.loadAutomezzoTable;
 import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificate;
 
@@ -36,8 +35,6 @@ public class AutomezzoController implements Initializable {
     private TreeView<String> homeTreeView;
     @FXML
     private TextField ricercaAutomezzo;
-    @FXML
-    private Button addButton;
     @FXML
     private ChoiceBox<String> choiceItem;
     @FXML
@@ -75,12 +72,9 @@ public class AutomezzoController implements Initializable {
 
     private void loadDate() {
         refreshTable();
-        targa.setCellValueFactory(new PropertyValueFactory<>("targa"));
-        marca.setCellValueFactory(new PropertyValueFactory<>("marca"));
-        assicurazione.setCellValueFactory(new PropertyValueFactory<>("assicurazione"));
-        prezzo.setCellValueFactory(new PropertyValueFactory<>("prezzo"));
-        tableView.setItems(automezzoTableView);
+        loadAutomezzoTable(targa, marca, assicurazione, prezzo, tableView, automezzoTableView);
     }
+
 
     private void refreshTable() {
         try {
@@ -102,7 +96,7 @@ public class AutomezzoController implements Initializable {
         }
     }
 
-    public void updateAutomezzo(ActionEvent actionEvent) throws IOException {
+    public void updateAutomezzo() throws IOException {
         if (selectedAutomezzo != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/automezzo/updateAutomezzo.fxml"));
             Parent root = loader.load();
@@ -122,7 +116,7 @@ public class AutomezzoController implements Initializable {
         }
     }
 
-    public void deleteAutomezzo(ActionEvent actionEvent) {
+    public void deleteAutomezzo() {
         if (selectedAutomezzo != null) {
             getGestioneAcquisti().removeAutomezzo(selectedAutomezzo.getTarga());
             selectedAutomezzo = null;
@@ -130,7 +124,7 @@ public class AutomezzoController implements Initializable {
         }
     }
 
-    public void addAction(ActionEvent actionEvent) throws IOException {
+    public void addAction() throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/insertAutomezzo.fxml")));
 
         Stage dialogStage = new Stage();
@@ -146,52 +140,10 @@ public class AutomezzoController implements Initializable {
 
     public void selectItem(MouseEvent event) {
         TreeItem<String> item = homeTreeView.getSelectionModel().getSelectedItem();
-        if (item != null) {
-            switch (item.getValue()) {
-                case "Fornitore" -> {
-                    try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/acquisti/fornitori.fxml")));
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-                case "Prodotto Da Ordinare" -> {
-                    try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/prodotto/prodotto.fxml")));
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-                case "Ordine" -> {
-                    try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/ordine/ordine.fxml")));
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-                case "Preventivo" -> {
-                    // Handle Preventivo case
-                    System.out.println("Handling Preventivo case");
-                }
-                default -> {
-                }
-            }
-        }
+        UIUtil.loadSelectedItem(item, event);
     }
 
-    public void searchAutomezzo(ActionEvent actionEvent) {
+    public void searchAutomezzo() {
         String text = ricercaAutomezzo.getText();
         if (!stringheVerificate(text)) {
             messaggioParametriScorretti();

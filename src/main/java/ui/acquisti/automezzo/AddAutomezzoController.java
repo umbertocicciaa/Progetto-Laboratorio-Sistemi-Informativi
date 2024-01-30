@@ -51,7 +51,6 @@ public class AddAutomezzoController implements Initializable {
             getGestioneAcquisti().addAutomezzo(targa,marca,assicurazione,BigDecimal.valueOf(Double.parseDouble(prezzo)));
             closeStage();
         } catch (HibernateException ex) {
-            ex.printStackTrace();
             messaggioErroreInserimento("Prodotto");
         }
         Stage stage = (Stage) okButton.getScene().getWindow();
@@ -66,7 +65,6 @@ public class AddAutomezzoController implements Initializable {
             double numero = Double.parseDouble(prezzo);
             return numero >= 0;
         } catch (NumberFormatException excp) {
-            excp.printStackTrace();
             return false;
         }
     }

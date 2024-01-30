@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -18,7 +17,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.hibernate.HibernateException;
 import ui.UIUtil;
-
 
 import java.io.IOException;
 import java.net.URL;
@@ -127,7 +125,7 @@ public class FornitoriController implements Initializable {
         }
     }
 
-    public void deleteFornitore(ActionEvent actionEvent) {
+    public void deleteFornitore() {
         if (selectedFornitore != null) {
             getGestioneAcquisti().removeFornitore(selectedFornitore.getPiva());
             selectedFornitore = null;
@@ -145,51 +143,9 @@ public class FornitoriController implements Initializable {
         }
     }
 
-    public void selectItem(MouseEvent contextMenuEvent) {
+    public void selectItem(MouseEvent event) {
         TreeItem<String> item = homeTreeView.getSelectionModel().getSelectedItem();
-        if (item != null) {
-            switch (item.getValue()) {
-                case "Automezzo Da Ordinare" -> {
-                    try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/automezzo.fxml")));
-                        Stage stage = (Stage) ((Node) contextMenuEvent.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-                case "Prodotto Da Ordinare" -> {
-                    try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/prodotto/prodotto.fxml")));
-                        Stage stage = (Stage) ((Node) contextMenuEvent.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-                case "Ordine" -> {
-                    try {
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/ordine/ordine.fxml")));
-                        Stage stage = (Stage) ((Node) contextMenuEvent.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-                case "Preventivo" -> {
-                    // Handle Preventivo case
-                    System.out.println("Handling Preventivo case");
-                }
-                default -> {
-                }
-            }
-        }
+        UIUtil.loadSelectedItem(item, event);
     }
 
 

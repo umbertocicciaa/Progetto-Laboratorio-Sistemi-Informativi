@@ -1,6 +1,5 @@
 package ui.acquisti.ordine;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -40,7 +39,7 @@ public class UpdateOrdineController implements Initializable {
         this.ordine = numero;
     }
 
-    public void okButton(ActionEvent actionEvent) {
+    public void okButton() {
         String stato = statoField.getText();
         String quantita = quantitaField.getText();
 
@@ -62,7 +61,7 @@ public class UpdateOrdineController implements Initializable {
                     messaggioParametriScorretti();
                     return;
                 }
-                getGestioneAcquisti().updateOrdine(ordine, stato.isEmpty() || !isStatoValido(stato) ? null : stato, date == null ? null : date, quantita.isEmpty() ? -1 : numero);
+                getGestioneAcquisti().updateOrdine(ordine, stato.isEmpty() || !isStatoValido(stato) ? null : stato, date, quantita.isEmpty() ? -1 : numero);
             } catch (NumberFormatException ex) {
                 messaggioParametriScorretti();
             } catch (HibernateException ex) {
@@ -76,8 +75,6 @@ public class UpdateOrdineController implements Initializable {
     }
 
     private boolean isStatoValido(String stato) {
-        if(stato.isEmpty())
-            return true;
         return "lavorazione".equalsIgnoreCase(stato) || "chiuso".equalsIgnoreCase(stato) || "aperto".equalsIgnoreCase(stato);
     }
 
@@ -87,7 +84,7 @@ public class UpdateOrdineController implements Initializable {
         return Date.from(instant);
     }
 
-    public void cancelButton(ActionEvent actionEvent) {
+    public void cancelButton() {
         Stage stage = (Stage) cancel.getScene().getWindow();
         stage.close();
     }

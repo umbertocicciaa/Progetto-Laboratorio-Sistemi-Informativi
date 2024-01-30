@@ -1,6 +1,5 @@
 package ui.acquisti.automezzo;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -34,7 +33,7 @@ public class UpdateAutomezzoController implements Initializable {
 
     }
 
-    public void handleOkButton(ActionEvent actionEvent) {
+    public void handleOkButton() {
         String marca = marcaField.getText();
         String assicurazione = assicurazioneField.getText();
         String prezzoS = prezzoField.getText();
@@ -69,7 +68,7 @@ public class UpdateAutomezzoController implements Initializable {
         this.targa = targa;
     }
 
-    public void handleCancelButton(ActionEvent actionEvent) {
+    public void handleCancelButton() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
