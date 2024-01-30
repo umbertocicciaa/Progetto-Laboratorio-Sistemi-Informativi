@@ -14,7 +14,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.hibernate.HibernateException;
 import ui.UIUtil;
 
 import java.io.IOException;
@@ -25,8 +24,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
-import static ui.UIUtil.loadAutomezzoTable;
-import static ui.UIUtil.messaggioParametriScorretti;
+import static ui.UIUtil.*;
 import static ui.Util.stringheVerificate;
 
 public class AutomezzoController implements Initializable {
@@ -77,14 +75,12 @@ public class AutomezzoController implements Initializable {
 
 
     private void refreshTable() {
-        try {
-            automezzoTableView.clear();
-            List<Automezzo> resultSet = getGestioneAcquisti().getAutomezzi();
-            automezzoTableView.addAll(resultSet);
-            tableView.setItems(automezzoTableView);
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+
+        automezzoTableView.clear();
+        List<Automezzo> resultSet = getGestioneAcquisti().getAutomezzi();
+        automezzoTableView.addAll(resultSet);
+        tableView.setItems(automezzoTableView);
+
     }
 
     private void getSelectedCriterio(ActionEvent actionEvent) {
@@ -168,8 +164,7 @@ public class AutomezzoController implements Initializable {
                         automezzoTableView.addAll(getGestioneAcquisti().automezziDiUnPrezzo(BigDecimal.valueOf(prezzo)));
                         tableView.refresh();
                     } catch (NumberFormatException exception) {
-                        exception.printStackTrace();
-                        messaggioParametriScorretti();
+                        messaggioErroreInserimentoNumero();
                     }
                 }
                 case "Marca" -> {

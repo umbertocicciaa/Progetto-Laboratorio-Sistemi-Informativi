@@ -5,21 +5,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
-import static ui.UIUtil.messaggioErroreInserimento;
 import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificate;
 
 public class AddAutomezzoController implements Initializable {
 
     @FXML
-    private  TextArea prezzoField;
+    private TextArea prezzoField;
     @FXML
     private TextArea assicurazioneField;
     @FXML
@@ -28,13 +26,10 @@ public class AddAutomezzoController implements Initializable {
     private TextArea marcaField;
 
     @FXML
-    private Button okButton;
-    @FXML
     private Button cancelButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 
     public void handleOkButton() {
@@ -43,23 +38,13 @@ public class AddAutomezzoController implements Initializable {
         String prezzo = prezzoField.getText();
         String assicurazione = assicurazioneField.getText();
 
-        if (!stringheVerificate(targa,marca,assicurazione) || !validaQuantita(prezzo)) {
+        if (!stringheVerificate(targa, marca, assicurazione) || !validaQuantita(prezzo)) {
             messaggioParametriScorretti();
             return;
         }
-        try {
-            getGestioneAcquisti().addAutomezzo(targa,marca,assicurazione,BigDecimal.valueOf(Double.parseDouble(prezzo)));
-            closeStage();
-        } catch (HibernateException ex) {
-            messaggioErroreInserimento("Prodotto");
-        }
-        Stage stage = (Stage) okButton.getScene().getWindow();
-        stage.close();
+        getGestioneAcquisti().addAutomezzo(targa, marca, assicurazione, BigDecimal.valueOf(Double.parseDouble(prezzo)));
     }
-    private void closeStage() {
-        Stage stage = (Stage) okButton.getScene().getWindow();
-        stage.close();
-    }
+
     private boolean validaQuantita(String prezzo) {
         try {
             double numero = Double.parseDouble(prezzo);

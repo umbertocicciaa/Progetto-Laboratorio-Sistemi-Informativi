@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static ui.UIUtil.messaggioErroreCancellazione;
+import static ui.UIUtil.*;
 
 /**
  * @author umbertodomenicociccia
@@ -23,24 +23,26 @@ public interface GestioneAcquisti {
     SessionFactory sessionFactory = HibernateSingleton.ISTANCE.getSessionFactory();
 
     default void addFornitore(@NotNull String piva, @NotNull String nome, @NotNull String citta) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            session.persist(new Fornitore(piva, nome, citta));
-            session.getTransaction().commit();
-        } catch (HibernateException exception) {
-            exception.printStackTrace();
-        }
+            try {
+                Session session = sessionFactory.openSession();
+                session.beginTransaction();
+                session.persist(new Fornitore(piva, nome, citta));
+                session.getTransaction().commit();
+            }catch (RuntimeException exception){
+                messaggioErroreInserimento("fornitore");
+            }
     }
 
     default void removeFornitore(@NotNull String piva) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            Fornitore fornitore = session.get(Fornitore.class, piva);
-            session.remove(fornitore);
-            session.getTransaction().commit();
-        } catch (HibernateException exception) {
-            exception.printStackTrace();
-        }
+            try {
+                Session session = sessionFactory.openSession();
+                session.beginTransaction();
+                Fornitore fornitore = session.get(Fornitore.class, piva);
+                session.remove(fornitore);
+                session.getTransaction().commit();
+            }catch (RuntimeException exception){
+                messaggioErroreCancellazione("fornitore");
+            }
     }
 
     default Fornitore getFornitore(@NotNull String piva) {
@@ -202,7 +204,7 @@ public interface GestioneAcquisti {
                 automezzo.setPrezzo(prezzo);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
-            exception.printStackTrace();
+            messaggioErroreAggiornamento("automezzo");
         }
     }
 
@@ -267,19 +269,6 @@ public interface GestioneAcquisti {
             exception.printStackTrace();
             return preventivo;
         }
-    }
-
-    default List<Preventivo> getPreventivo() {
-        List<Preventivo> res = new ArrayList<>();
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            Query<Preventivo> query = session.createNamedQuery("Preventivo.findAll", Preventivo.class);
-            res.addAll(query.getResultList());
-            session.getTransaction().commit();
-        } catch (HibernateException exception) {
-            exception.printStackTrace();
-        }
-        return res;
     }
 
     default void addOrdine(int codice, @NotNull String stato, @NotNull Date data, int quantita, int prodotto, String automezzo) {

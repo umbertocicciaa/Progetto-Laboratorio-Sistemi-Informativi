@@ -48,7 +48,21 @@ public final class UIUtil {
     public static void messaggioErroreInserimento(String text) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setHeaderText("Errore!");
-        errorAlert.setContentText("Hai fornito un " + text + " errato");
+        errorAlert.setContentText("Hai fornito un " + text + " errato o gia esistente");
+        errorAlert.showAndWait();
+    }
+
+    public static void messaggioErroreInserimentoNumero() {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText("Errore!");
+        errorAlert.setContentText("Hai fornito un numero errato");
+        errorAlert.showAndWait();
+    }
+
+    public static void messaggioErroreAggiornamento(String text) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText("Errore!");
+        errorAlert.setContentText("Erorre nell'aggiornamento del:" +text);
         errorAlert.showAndWait();
     }
 
@@ -67,7 +81,7 @@ public final class UIUtil {
         tableView.setItems(automezzoTableView);
     }
 
-    public static void loadSelectedItem(TreeItem<String> item, Event event){
+    public static void loadSelectedItem(TreeItem<String> item, Event event) {
         if (item != null) {
             switch (item.getValue()) {
                 case "Fornitore" -> {

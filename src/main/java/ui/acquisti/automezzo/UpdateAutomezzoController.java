@@ -5,13 +5,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
+import static ui.UIUtil.messaggioErroreInserimentoNumero;
 import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificatePossibileEmpty;
 
@@ -38,30 +38,24 @@ public class UpdateAutomezzoController implements Initializable {
         String assicurazione = assicurazioneField.getText();
         String prezzoS = prezzoField.getText();
 
-        if (stringheVerificatePossibileEmpty(marca, assicurazione, prezzoS)) {
-            try {
-                double prezzo = prezzoS.isEmpty() ? 0 : Double.parseDouble(prezzoS);
-                if (prezzo < 0) {
-                    messaggioParametriScorretti();
-                    return;
-                }
-
-                if (marca.isEmpty() && assicurazione.isEmpty() && prezzoS.isEmpty()) {
-                    messaggioParametriScorretti();
-                    return;
-                }
-                getGestioneAcquisti().updateAutomezzo(targa, marca.isEmpty() ? null : marca, assicurazione.isEmpty() ? null : assicurazione, prezzoS.isEmpty() ? null : BigDecimal.valueOf(prezzo));
-            } catch (NumberFormatException ex) {
-                messaggioParametriScorretti();
-            } catch (HibernateException ex) {
-                ex.printStackTrace();
-            }
-        } else {
+        if (!stringheVerificatePossibileEmpty(marca, assicurazione, prezzoS)) {
             messaggioParametriScorretti();
+            return;
         }
-
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
+        try {
+            double prezzo = prezzoS.isEmpty() ? 0 : Double.parseDouble(prezzoS);
+            if (prezzo < 0) {
+                messaggioParametriScorretti();
+                return;
+            }
+            if (marca.isEmpty() && assicurazione.isEmpty() && prezzoS.isEmpty()) {
+                messaggioParametriScorretti();
+                return;
+            }
+            getGestioneAcquisti().updateAutomezzo(targa, marca.isEmpty() ? null : marca, assicurazione.isEmpty() ? null : assicurazione, prezzoS.isEmpty() ? null : BigDecimal.valueOf(prezzo));
+        } catch (NumberFormatException ex) {
+            messaggioErroreInserimentoNumero();
+        }
     }
 
     public void initAutomezzo(String targa) {
