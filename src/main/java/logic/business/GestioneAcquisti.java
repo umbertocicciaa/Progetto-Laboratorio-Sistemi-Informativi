@@ -162,8 +162,8 @@ public interface GestioneAcquisti {
             session.beginTransaction();
             session.persist(new Automezzo(targa, marca, assicurazione, prezzo));
             session.getTransaction().commit();
-        } catch (HibernateException exception) {
-            exception.printStackTrace();
+        } catch (RuntimeException exception) {
+            messaggioErroreInserimento("automezzo");
         }
     }
 
@@ -175,7 +175,7 @@ public interface GestioneAcquisti {
             session.getTransaction().commit();
         } catch (HibernateException exception) {
             exception.printStackTrace();
-            messaggioErroreCancellazione("Automezzo");
+            messaggioErroreCancellazione("automezzo");
         }
     }
 

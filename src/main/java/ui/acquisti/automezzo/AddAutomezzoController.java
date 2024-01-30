@@ -43,6 +43,8 @@ public class AddAutomezzoController implements Initializable {
             return;
         }
         getGestioneAcquisti().addAutomezzo(targa, marca, assicurazione, BigDecimal.valueOf(Double.parseDouble(prezzo)));
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 
     private boolean validaQuantita(String prezzo) {

@@ -53,6 +53,8 @@ public class UpdateAutomezzoController implements Initializable {
                 return;
             }
             getGestioneAcquisti().updateAutomezzo(targa, marca.isEmpty() ? null : marca, assicurazione.isEmpty() ? null : assicurazione, prezzoS.isEmpty() ? null : BigDecimal.valueOf(prezzo));
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close();
         } catch (NumberFormatException ex) {
             messaggioErroreInserimentoNumero();
         }
