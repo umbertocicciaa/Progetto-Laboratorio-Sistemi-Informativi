@@ -15,7 +15,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.hibernate.HibernateException;
 import ui.UIUtil;
 
 import java.io.IOException;
@@ -28,6 +27,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
+import static ui.UIUtil.messaggioErroreCaricamentoFinestra;
 import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificate;
 
@@ -85,14 +85,11 @@ public class OrdineController implements Initializable {
     }
 
     private void refreshTable() {
-        try {
-            ordineTableView.clear();
-            List<Ordine> resultSet = getGestioneAcquisti().getOrdine();
-            ordineTableView.addAll(resultSet);
-            tableView.setItems(ordineTableView);
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+        ordineTableView.clear();
+        List<Ordine> resultSet = getGestioneAcquisti().getOrdine();
+        ordineTableView.addAll(resultSet);
+        tableView.setItems(ordineTableView);
+
     }
 
     private void getSelectedCriterio(ActionEvent actionEvent) {
@@ -104,24 +101,28 @@ public class OrdineController implements Initializable {
         }
     }
 
-    public void updateOrdine() throws IOException {
-        if (selectedOrdine != null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/ordine/updateOrdine.fxml"));
-            Parent root = loader.load();
+    public void updateOrdine() {
+        try {
+            if (selectedOrdine != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/ordine/updateOrdine.fxml"));
+                Parent root = loader.load();
 
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setTitle("Update Prodotto");
+                Stage dialogStage = new Stage();
+                dialogStage.initModality(Modality.APPLICATION_MODAL);
+                dialogStage.setTitle("Update Prodotto");
 
-            Scene scene = new Scene(root);
-            dialogStage.setScene(scene);
-            UpdateOrdineController controller = loader.getController();
-            controller.initOrdine(selectedOrdine.getNumero());
+                Scene scene = new Scene(root);
+                dialogStage.setScene(scene);
+                UpdateOrdineController controller = loader.getController();
+                controller.initOrdine(selectedOrdine.getNumero());
 
-            dialogStage.showAndWait();
-            refreshTable();
-            selectedOrdine = null;
-            refreshTable();
+                dialogStage.showAndWait();
+                refreshTable();
+                selectedOrdine = null;
+                refreshTable();
+            }
+        } catch (IOException e) {
+            messaggioErroreCaricamentoFinestra();
         }
     }
 
@@ -146,12 +147,12 @@ public class OrdineController implements Initializable {
 
             dialogStage.showAndWait();
             refreshTable();
-        }catch (IOException exception){
-            exception.printStackTrace();
+        } catch (IOException exception) {
+            messaggioErroreCaricamentoFinestra();
         }
     }
 
-    public void selectItem(MouseEvent event){
+    public void selectItem(MouseEvent event) {
         TreeItem<String> item = homeTreeView.getSelectionModel().getSelectedItem();
         UIUtil.loadSelectedItem(item, event);
     }
@@ -166,11 +167,11 @@ public class OrdineController implements Initializable {
             switch (criterio) {
                 case "Numero" -> {
                     try {
-                        int codice=Integer.parseInt(text);
+                        int codice = Integer.parseInt(text);
                         ordineTableView.clear();
                         ordineTableView.addAll(getGestioneAcquisti().getOrdineByNumero(codice));
                         tableView.refresh();
-                    }catch (NumberFormatException exception){
+                    } catch (NumberFormatException exception) {
                         messaggioParametriScorretti();
                     }
                 }
@@ -188,17 +189,17 @@ public class OrdineController implements Initializable {
                         ordineTableView.clear();
                         ordineTableView.addAll(getGestioneAcquisti().getOrdineByData(date));
                         tableView.refresh();
-                    }catch (ParseException e) {
+                    } catch (ParseException e) {
                         messaggioParametriScorretti();
                     }
                 }
-                case "Quantita"->{
+                case "Quantita" -> {
                     try {
-                        int quantita=Integer.parseInt(text);
+                        int quantita = Integer.parseInt(text);
                         ordineTableView.clear();
                         ordineTableView.addAll(getGestioneAcquisti().getOrdineByQuantita(quantita));
                         tableView.refresh();
-                    }catch (NumberFormatException exception){
+                    } catch (NumberFormatException exception) {
                         messaggioParametriScorretti();
                     }
                 }

@@ -23,26 +23,26 @@ public interface GestioneAcquisti {
     SessionFactory sessionFactory = HibernateSingleton.ISTANCE.getSessionFactory();
 
     default void addFornitore(@NotNull String piva, @NotNull String nome, @NotNull String citta) {
-            try {
-                Session session = sessionFactory.openSession();
-                session.beginTransaction();
-                session.persist(new Fornitore(piva, nome, citta));
-                session.getTransaction().commit();
-            }catch (RuntimeException exception){
-                messaggioErroreInserimento("fornitore");
-            }
+        try {
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.persist(new Fornitore(piva, nome, citta));
+            session.getTransaction().commit();
+        } catch (RuntimeException exception) {
+            messaggioErroreInserimento("fornitore");
+        }
     }
 
     default void removeFornitore(@NotNull String piva) {
-            try {
-                Session session = sessionFactory.openSession();
-                session.beginTransaction();
-                Fornitore fornitore = session.get(Fornitore.class, piva);
-                session.remove(fornitore);
-                session.getTransaction().commit();
-            }catch (RuntimeException exception){
-                messaggioErroreCancellazione("fornitore");
-            }
+        try {
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            Fornitore fornitore = session.get(Fornitore.class, piva);
+            session.remove(fornitore);
+            session.getTransaction().commit();
+        } catch (RuntimeException exception) {
+            messaggioErroreCancellazione("fornitore");
+        }
     }
 
     default Fornitore getFornitore(@NotNull String piva) {
@@ -284,7 +284,7 @@ public interface GestioneAcquisti {
             session.persist(ordine);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
-            exception.printStackTrace();
+            messaggioErroreInserimento("ordine");
         }
     }
 

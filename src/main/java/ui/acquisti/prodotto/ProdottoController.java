@@ -15,7 +15,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.hibernate.HibernateException;
 import ui.UIUtil;
 
 import java.io.IOException;
@@ -25,6 +24,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
+import static ui.UIUtil.messaggioErroreCaricamentoFinestra;
 import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificate;
 
@@ -97,50 +97,53 @@ public class ProdottoController implements Initializable {
         }
     }
 
-    public void addAction() throws IOException {
-
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/prodotto/insertProdotto.fxml")));
-
-        Stage dialogStage = new Stage();
-        dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle("Insert Prodotto");
-
-        Scene scene = new Scene(root);
-        dialogStage.setScene(scene);
-
-        dialogStage.showAndWait();
-        refreshTable();
-    }
-
-    private void refreshTable() {
+    public void addAction() {
         try {
-            prodottoTableView.clear();
-            List<Prodotto> resultSet = getGestioneAcquisti().getProdotti();
-            prodottoTableView.addAll(resultSet);
-            tableView.setItems(prodottoTableView);
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void updateProdotto() throws IOException {
-        if (selectedProdotto != null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/prodotto/updateProdotto.fxml"));
-            Parent root = loader.load();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/prodotto/insertProdotto.fxml")));
 
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setTitle("Update Prodotto");
+            dialogStage.setTitle("Insert Prodotto");
 
             Scene scene = new Scene(root);
             dialogStage.setScene(scene);
-            UpdateProdottoController controller = loader.getController();
-            controller.initProdotto(selectedProdotto.getCodProdotto());
 
             dialogStage.showAndWait();
             refreshTable();
-            selectedProdotto = null;
-            refreshTable();
+        } catch (IOException e) {
+            messaggioErroreCaricamentoFinestra();
+        }
+    }
+
+    private void refreshTable() {
+        prodottoTableView.clear();
+        List<Prodotto> resultSet = getGestioneAcquisti().getProdotti();
+        prodottoTableView.addAll(resultSet);
+        tableView.setItems(prodottoTableView);
+    }
+
+    public void updateProdotto() {
+        try {
+            if (selectedProdotto != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/prodotto/updateProdotto.fxml"));
+                Parent root = loader.load();
+
+                Stage dialogStage = new Stage();
+                dialogStage.initModality(Modality.APPLICATION_MODAL);
+                dialogStage.setTitle("Update Prodotto");
+
+                Scene scene = new Scene(root);
+                dialogStage.setScene(scene);
+                UpdateProdottoController controller = loader.getController();
+                controller.initProdotto(selectedProdotto.getCodProdotto());
+
+                dialogStage.showAndWait();
+                refreshTable();
+                selectedProdotto = null;
+                refreshTable();
+            }
+        } catch (IOException e) {
+            messaggioErroreCaricamentoFinestra();
         }
     }
 

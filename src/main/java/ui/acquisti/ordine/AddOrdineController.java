@@ -21,8 +21,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
-import static ui.UIUtil.messaggioErroreInserimento;
-import static ui.UIUtil.messaggioParametriScorretti;
+import static ui.UIUtil.*;
 import static ui.Util.stringheVerificate;
 import static ui.Util.stringheVerificatePossibileEmpty;
 
@@ -89,8 +88,8 @@ public class AddOrdineController implements Initializable {
             Date date = convertLocalDateToDate(data);
             int prod = Integer.parseInt(prodotto);
             getGestioneAcquisti().addOrdine(nume, stato, date, quantit, prod, automezzo);
-        } catch (Exception ex) {
-            messaggioErroreInserimento("Prodotto");
+        } catch (NumberFormatException ex) {
+            messaggioErroreInserimentoNumero();
         }
         Stage stage = (Stage) cancel.getScene().getWindow();
         stage.close();

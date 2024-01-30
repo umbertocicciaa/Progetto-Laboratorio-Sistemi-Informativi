@@ -59,10 +59,17 @@ public final class UIUtil {
         errorAlert.showAndWait();
     }
 
+    public static void messaggioErroreCaricamentoFinestra() {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText("Errore!");
+        errorAlert.setContentText("Errore caricamento finestra");
+        errorAlert.showAndWait();
+    }
+
     public static void messaggioErroreAggiornamento(String text) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setHeaderText("Errore!");
-        errorAlert.setContentText("Erorre nell'aggiornamento del:" +text);
+        errorAlert.setContentText("Erorre nell'aggiornamento del:" + text);
         errorAlert.showAndWait();
     }
 
@@ -92,7 +99,7 @@ public final class UIUtil {
                         stage.setScene(scene);
                         stage.show();
                     } catch (Exception exception) {
-                        exception.printStackTrace();
+                        messaggioErroreCaricamentoFinestra();
                     }
                 }
                 case "Prodotto Da Ordinare" -> {
@@ -103,7 +110,7 @@ public final class UIUtil {
                         stage.setScene(scene);
                         stage.show();
                     } catch (Exception exception) {
-                        exception.printStackTrace();
+                        messaggioErroreCaricamentoFinestra();
                     }
                 }
                 case "Automezzo Da Ordinare" -> {
@@ -114,7 +121,7 @@ public final class UIUtil {
                         stage.setScene(scene);
                         stage.show();
                     } catch (Exception exception) {
-                        exception.printStackTrace();
+                        messaggioErroreCaricamentoFinestra();
                     }
                 }
                 case "Ordine" -> {
@@ -125,7 +132,7 @@ public final class UIUtil {
                         stage.setScene(scene);
                         stage.show();
                     } catch (Exception exception) {
-                        exception.printStackTrace();
+                        messaggioErroreCaricamentoFinestra();
                     }
                 }
                 default -> {

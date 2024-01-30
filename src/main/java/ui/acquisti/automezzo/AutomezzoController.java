@@ -92,23 +92,27 @@ public class AutomezzoController implements Initializable {
         }
     }
 
-    public void updateAutomezzo() throws IOException {
-        if (selectedAutomezzo != null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/automezzo/updateAutomezzo.fxml"));
-            Parent root = loader.load();
+    public void updateAutomezzo() {
+        try {
+            if (selectedAutomezzo != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/automezzo/updateAutomezzo.fxml"));
+                Parent root = loader.load();
 
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setTitle("Update Automezzo");
+                Stage dialogStage = new Stage();
+                dialogStage.initModality(Modality.APPLICATION_MODAL);
+                dialogStage.setTitle("Update Automezzo");
 
-            Scene scene = new Scene(root);
-            dialogStage.setScene(scene);
-            UpdateAutomezzoController controller = loader.getController();
-            controller.initAutomezzo(selectedAutomezzo.getTarga());
+                Scene scene = new Scene(root);
+                dialogStage.setScene(scene);
+                UpdateAutomezzoController controller = loader.getController();
+                controller.initAutomezzo(selectedAutomezzo.getTarga());
 
-            dialogStage.showAndWait();
-            selectedAutomezzo = null;
-            refreshTable();
+                dialogStage.showAndWait();
+                selectedAutomezzo = null;
+                refreshTable();
+            }
+        } catch (IOException e) {
+            messaggioErroreCaricamentoFinestra();
         }
     }
 
@@ -120,18 +124,22 @@ public class AutomezzoController implements Initializable {
         }
     }
 
-    public void addAction() throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/insertAutomezzo.fxml")));
+    public void addAction() {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/insertAutomezzo.fxml")));
 
-        Stage dialogStage = new Stage();
-        dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle("Insert Prodotto");
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Insert Prodotto");
 
-        Scene scene = new Scene(root, 300, 150);
-        dialogStage.setScene(scene);
+            Scene scene = new Scene(root, 300, 150);
+            dialogStage.setScene(scene);
 
-        dialogStage.showAndWait();
-        refreshTable();
+            dialogStage.showAndWait();
+            refreshTable();
+        } catch (IOException ex) {
+            messaggioErroreCaricamentoFinestra();
+        }
     }
 
     public void selectItem(MouseEvent event) {

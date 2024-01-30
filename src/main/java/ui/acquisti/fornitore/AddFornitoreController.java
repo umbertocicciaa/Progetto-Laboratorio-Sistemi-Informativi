@@ -26,8 +26,6 @@ public class AddFornitoreController implements Initializable {
     @FXML
     private TextArea cittaField;
     @FXML
-    private Button okButton;
-    @FXML
     private Button cancelButton;
 
 
@@ -49,7 +47,8 @@ public class AddFornitoreController implements Initializable {
         } else {
             messaggioParametriScorretti();
         }
-        closeStage();
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 
     private boolean addFornitore(String piva, String nome, String citta) {
@@ -57,15 +56,8 @@ public class AddFornitoreController implements Initializable {
             getGestioneAcquisti().addFornitore(piva, nome, citta);
             return true;
         } catch (HibernateException ex) {
-            ex.printStackTrace();
             return false;
         }
-
-    }
-
-    private void closeStage() {
-        Stage stage = (Stage) okButton.getScene().getWindow();
-        stage.close();
     }
 
 

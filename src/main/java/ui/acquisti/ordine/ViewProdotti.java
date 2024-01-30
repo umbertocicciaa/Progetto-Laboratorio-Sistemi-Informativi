@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.hibernate.HibernateException;
 
 import java.net.URL;
 import java.util.List;
@@ -35,14 +34,11 @@ public class ViewProdotti implements Initializable {
     }
 
     private void refreshTableProdotto() {
-        try {
             prodottoTableView.clear();
             List<Prodotto> resultSet = getGestioneAcquisti().getProdotti();
             prodottoTableView.addAll(resultSet);
             prodotti.setItems(prodottoTableView);
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+
     }
 
     private void loadDateProdotto() {

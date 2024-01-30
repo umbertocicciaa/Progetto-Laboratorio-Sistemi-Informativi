@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.hibernate.HibernateException;
 
 import java.net.URL;
 import java.time.Instant;
@@ -64,8 +63,6 @@ public class UpdateOrdineController implements Initializable {
                 getGestioneAcquisti().updateOrdine(ordine, stato.isEmpty() || !isStatoValido(stato) ? null : stato, date, quantita.isEmpty() ? -1 : numero);
             } catch (NumberFormatException ex) {
                 messaggioParametriScorretti();
-            } catch (HibernateException ex) {
-                ex.printStackTrace();
             }
         } else {
             messaggioParametriScorretti();

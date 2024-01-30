@@ -5,7 +5,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import org.hibernate.HibernateException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,15 +31,11 @@ public class UpdateFornitoreController implements Initializable {
         String nome = nomeField.getText();
         String citta = cittaField.getText();
         if (stringheVerificatePossibileEmpty(nome, citta)) {
-            try {
-                if (nome.isEmpty() && citta.isEmpty()) {
-                    messaggioParametriScorretti();
-                    return;
-                }
-                getGestioneAcquisti().updateFornitore(piva, nome.isEmpty() ? null : nome, citta.isEmpty() ? null : citta);
-            } catch (HibernateException ex) {
-                ex.printStackTrace();
+            if (nome.isEmpty() && citta.isEmpty()) {
+                messaggioParametriScorretti();
+                return;
             }
+            getGestioneAcquisti().updateFornitore(piva, nome.isEmpty() ? null : nome, citta.isEmpty() ? null : citta);
         }
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();

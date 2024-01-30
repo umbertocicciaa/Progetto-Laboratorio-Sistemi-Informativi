@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import org.hibernate.HibernateException;
 
 import java.net.URL;
 import java.util.List;
@@ -37,14 +36,10 @@ public class ViewAutomezzi implements Initializable {
     }
 
     private void refreshTableAutomezzo() {
-        try {
             automezzoTableView.clear();
             List<Automezzo> resultSet = getGestioneAcquisti().getAutomezzi();
             automezzoTableView.addAll(resultSet);
             automezzi.setItems(automezzoTableView);
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override

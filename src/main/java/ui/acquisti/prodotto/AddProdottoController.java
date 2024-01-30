@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
-import static ui.UIUtil.messaggioErroreInserimento;
 import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificate;
 
@@ -33,14 +32,7 @@ public class AddProdottoController implements Initializable {
             messaggioParametriScorretti();
             return;
         }
-
-        try {
-            getGestioneAcquisti().addProdotto(tipo, Integer.parseInt(quantita));
-            closeStage();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            messaggioErroreInserimento("Prodotto");
-        }
+        getGestioneAcquisti().addProdotto(tipo, Integer.parseInt(quantita));
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }
@@ -50,15 +42,10 @@ public class AddProdottoController implements Initializable {
             int numero = Integer.parseInt(quantita);
             return numero >= 0;
         } catch (NumberFormatException excp) {
-            excp.printStackTrace();
             return false;
         }
     }
 
-    private void closeStage() {
-        Stage stage = (Stage) okButton.getScene().getWindow();
-        stage.close();
-    }
     public void handleCancelButton() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();

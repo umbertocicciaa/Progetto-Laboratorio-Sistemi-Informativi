@@ -15,7 +15,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.hibernate.HibernateException;
 import ui.UIUtil;
 
 import java.io.IOException;
@@ -25,6 +24,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
+import static ui.UIUtil.messaggioErroreCaricamentoFinestra;
 import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificate;
 
@@ -78,50 +78,55 @@ public class FornitoriController implements Initializable {
     }
 
     private void refreshTable() {
+        fornitoriTableView.clear();
+        List<Fornitore> resultSet = getGestioneAcquisti().getFornitori();
+        fornitoriTableView.addAll(resultSet);
+        tableView.setItems(fornitoriTableView);
+
+    }
+
+
+    public void addAction() {
         try {
-            fornitoriTableView.clear();
-            List<Fornitore> resultSet = getGestioneAcquisti().getFornitori();
-            fornitoriTableView.addAll(resultSet);
-            tableView.setItems(fornitoriTableView);
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/acquisti/insertFornitore.fxml")));
+
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Insert Fornitore");
+
+            Scene scene = new Scene(root);
+            dialogStage.setScene(scene);
+
+            dialogStage.showAndWait();
+            refreshTable();
+        } catch (IOException e) {
+            messaggioErroreCaricamentoFinestra();
         }
     }
 
 
-    public void addAction() throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/acquisti/insertFornitore.fxml")));
+    public void updateFornitore() {
+        try {
+            if (selectedFornitore != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/acquisti/updateFornitore.fxml"));
+                Parent root = loader.load();
 
-        Stage dialogStage = new Stage();
-        dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle("Insert Fornitore");
+                Stage dialogStage = new Stage();
+                dialogStage.initModality(Modality.APPLICATION_MODAL);
+                dialogStage.setTitle("Update Fornitore");
 
-        Scene scene = new Scene(root);
-        dialogStage.setScene(scene);
+                Scene scene = new Scene(root);
+                dialogStage.setScene(scene);
+                UpdateFornitoreController controller = loader.getController();
+                controller.initPiva(selectedFornitore.getPiva());
 
-        dialogStage.showAndWait();
-        refreshTable();
-    }
-
-
-    public void updateFornitore() throws IOException {
-        if (selectedFornitore != null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/acquisti/updateFornitore.fxml"));
-            Parent root = loader.load();
-
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setTitle("Update Fornitore");
-
-            Scene scene = new Scene(root);
-            dialogStage.setScene(scene);
-            UpdateFornitoreController controller = loader.getController();
-            controller.initPiva(selectedFornitore.getPiva());
-
-            dialogStage.showAndWait();
-            refreshTable();
-            selectedFornitore = null;
-            refreshTable();
+                dialogStage.showAndWait();
+                refreshTable();
+                selectedFornitore = null;
+                refreshTable();
+            }
+        } catch (IOException e) {
+            messaggioErroreCaricamentoFinestra();
         }
     }
 
