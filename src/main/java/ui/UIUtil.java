@@ -20,8 +20,18 @@ import java.util.Objects;
  * @author umbertodomenicociccia
  */
 public final class UIUtil {
+    public static Stage loadUiInsert(FXMLLoader loader, String title, int x, int y) throws IOException {
+        Stage dialogStage = new Stage();
+        Parent root = loader.load();
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        dialogStage.setTitle(title);
+        Scene scene = new Scene(root, x, y);
+        dialogStage.setScene(scene);
+        dialogStage.setResizable(false);
+        return dialogStage;
+    }
 
-    public static Stage loadUiUpdate(FXMLLoader loader,String title) throws IOException {
+    public static Stage loadUiUpdate(FXMLLoader loader, String title) throws IOException {
         Parent root = loader.load();
 
         Stage dialogStage = new Stage();

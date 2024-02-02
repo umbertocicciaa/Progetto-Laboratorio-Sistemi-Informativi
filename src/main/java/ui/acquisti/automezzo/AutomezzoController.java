@@ -7,12 +7,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ui.UIUtil;
 
@@ -20,7 +17,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
@@ -97,7 +93,7 @@ public class AutomezzoController implements Initializable {
             if (selectedAutomezzo != null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/automezzo/updateAutomezzo.fxml"));
 
-                Stage stage=loadUiUpdate(loader, "Update Automezzo");
+                Stage stage = loadUiUpdate(loader, "Update Automezzo");
 
                 UpdateAutomezzoController controller = loader.getController();
                 controller.initAutomezzo(selectedAutomezzo.getTarga());
@@ -122,15 +118,8 @@ public class AutomezzoController implements Initializable {
 
     public void addAction() {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/automezzo/insertAutomezzo.fxml")));
-
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setTitle("Insert Automezzo");
-            Scene scene = new Scene(root, 300, 150);
-            dialogStage.setScene(scene);
-            dialogStage.setResizable(false);
-            dialogStage.showAndWait();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/automezzo/insertAutomezzo.fxml"));
+            loadUiInsert(loader, "Insert Automezzo", 300, 150).showAndWait();
             refreshTable();
         } catch (IOException ex) {
             messaggioErroreCaricamentoFinestra();

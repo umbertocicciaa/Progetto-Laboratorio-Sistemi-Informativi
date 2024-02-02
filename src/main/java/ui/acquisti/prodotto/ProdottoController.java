@@ -7,20 +7,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ui.UIUtil;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
@@ -98,17 +94,9 @@ public class ProdottoController implements Initializable {
 
     public void addAction() {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/prodotto/insertProdotto.fxml")));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/prodotto/insertProdotto.fxml"));
+            loadUiInsert(loader, "Insert Prodotto", 300, 130).showAndWait();
 
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setTitle("Insert Prodotto");
-            dialogStage.setResizable(false);
-
-            Scene scene = new Scene(root);
-            dialogStage.setScene(scene);
-
-            dialogStage.showAndWait();
             refreshTable();
         } catch (IOException e) {
             messaggioErroreCaricamentoFinestra();
