@@ -24,8 +24,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
-import static ui.UIUtil.messaggioErroreCaricamentoFinestra;
-import static ui.UIUtil.messaggioParametriScorretti;
+import static ui.UIUtil.*;
 import static ui.Util.stringheVerificate;
 
 /**
@@ -93,7 +92,7 @@ public class FornitoriController implements Initializable {
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.setTitle("Insert Fornitore");
-
+            dialogStage.setResizable(false);
             Scene scene = new Scene(root);
             dialogStage.setScene(scene);
 
@@ -109,19 +108,14 @@ public class FornitoriController implements Initializable {
         try {
             if (selectedFornitore != null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/acquisti/updateFornitore.fxml"));
-                Parent root = loader.load();
 
-                Stage dialogStage = new Stage();
-                dialogStage.initModality(Modality.APPLICATION_MODAL);
-                dialogStage.setTitle("Update Fornitore");
+                Stage stage=loadUiUpdate(loader,"Update Fornitore");
 
-                Scene scene = new Scene(root);
-                dialogStage.setScene(scene);
-                UpdateFornitoreController controller = loader.getController();
+                UpdateFornitoreController controller=loader.getController();
                 controller.initPiva(selectedFornitore.getPiva());
 
-                dialogStage.showAndWait();
-                refreshTable();
+                stage.showAndWait();
+
                 selectedFornitore = null;
                 refreshTable();
             }

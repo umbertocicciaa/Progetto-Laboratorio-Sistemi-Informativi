@@ -9,15 +9,32 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.Objects;
 
 /**
  * @author umbertodomenicociccia
  */
 public final class UIUtil {
+
+    public static Stage loadUiUpdate(FXMLLoader loader,String title) throws IOException {
+        Parent root = loader.load();
+
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        dialogStage.setTitle(title);
+
+        Scene scene = new Scene(root);
+        dialogStage.setScene(scene);
+        dialogStage.setResizable(false);
+
+        return dialogStage;
+    }
+
     public static void inizializzaFinestra(@NotNull TreeView<String> homeTreeView) {
         TreeItem<String> rootItem = new TreeItem<>("Home");
         TreeItem<String> acquisti = new TreeItem<>("Gestione Acquisti");

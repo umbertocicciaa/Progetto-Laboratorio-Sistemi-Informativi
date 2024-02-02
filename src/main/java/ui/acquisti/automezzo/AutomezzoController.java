@@ -96,18 +96,14 @@ public class AutomezzoController implements Initializable {
         try {
             if (selectedAutomezzo != null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/automezzo/updateAutomezzo.fxml"));
-                Parent root = loader.load();
 
-                Stage dialogStage = new Stage();
-                dialogStage.initModality(Modality.APPLICATION_MODAL);
-                dialogStage.setTitle("Update Automezzo");
+                Stage stage=loadUiUpdate(loader, "Update Automezzo");
 
-                Scene scene = new Scene(root);
-                dialogStage.setScene(scene);
                 UpdateAutomezzoController controller = loader.getController();
                 controller.initAutomezzo(selectedAutomezzo.getTarga());
 
-                dialogStage.showAndWait();
+                stage.showAndWait();
+
                 selectedAutomezzo = null;
                 refreshTable();
             }
@@ -130,11 +126,10 @@ public class AutomezzoController implements Initializable {
 
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setTitle("Insert Prodotto");
-
+            dialogStage.setTitle("Insert Automezzo");
             Scene scene = new Scene(root, 300, 150);
             dialogStage.setScene(scene);
-
+            dialogStage.setResizable(false);
             dialogStage.showAndWait();
             refreshTable();
         } catch (IOException ex) {

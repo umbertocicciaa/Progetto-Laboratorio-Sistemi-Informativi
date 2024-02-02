@@ -24,8 +24,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
-import static ui.UIUtil.messaggioErroreCaricamentoFinestra;
-import static ui.UIUtil.messaggioParametriScorretti;
+import static ui.UIUtil.*;
 import static ui.Util.stringheVerificate;
 
 public class ProdottoController implements Initializable {
@@ -104,6 +103,7 @@ public class ProdottoController implements Initializable {
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.setTitle("Insert Prodotto");
+            dialogStage.setResizable(false);
 
             Scene scene = new Scene(root);
             dialogStage.setScene(scene);
@@ -126,19 +126,13 @@ public class ProdottoController implements Initializable {
         try {
             if (selectedProdotto != null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/prodotto/updateProdotto.fxml"));
-                Parent root = loader.load();
+                Stage stage = loadUiUpdate(loader, "Update Prodotto");
 
-                Stage dialogStage = new Stage();
-                dialogStage.initModality(Modality.APPLICATION_MODAL);
-                dialogStage.setTitle("Update Prodotto");
-
-                Scene scene = new Scene(root);
-                dialogStage.setScene(scene);
                 UpdateProdottoController controller = loader.getController();
                 controller.initProdotto(selectedProdotto.getCodProdotto());
 
-                dialogStage.showAndWait();
-                refreshTable();
+                stage.showAndWait();
+
                 selectedProdotto = null;
                 refreshTable();
             }
@@ -146,6 +140,7 @@ public class ProdottoController implements Initializable {
             messaggioErroreCaricamentoFinestra();
         }
     }
+
 
     public void deleteProdotto() {
         if (selectedProdotto != null) {

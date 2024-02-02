@@ -27,8 +27,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
-import static ui.UIUtil.messaggioErroreCaricamentoFinestra;
-import static ui.UIUtil.messaggioParametriScorretti;
+import static ui.UIUtil.*;
 import static ui.Util.stringheVerificate;
 
 public class OrdineController implements Initializable {
@@ -105,19 +104,14 @@ public class OrdineController implements Initializable {
         try {
             if (selectedOrdine != null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/ordine/updateOrdine.fxml"));
-                Parent root = loader.load();
 
-                Stage dialogStage = new Stage();
-                dialogStage.initModality(Modality.APPLICATION_MODAL);
-                dialogStage.setTitle("Update Prodotto");
+                Stage stage=loadUiUpdate(loader,"Update Ordine");
 
-                Scene scene = new Scene(root);
-                dialogStage.setScene(scene);
                 UpdateOrdineController controller = loader.getController();
                 controller.initOrdine(selectedOrdine.getNumero());
 
-                dialogStage.showAndWait();
-                refreshTable();
+                stage.showAndWait();
+
                 selectedOrdine = null;
                 refreshTable();
             }
@@ -144,6 +138,7 @@ public class OrdineController implements Initializable {
 
             Scene scene = new Scene(root, 300, 170);
             dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
 
             dialogStage.showAndWait();
             refreshTable();
