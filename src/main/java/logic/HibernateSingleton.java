@@ -14,6 +14,9 @@ public enum HibernateSingleton {
     HibernateSingleton() {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure()
+                .applySetting("hibernate.connection.username", System.getenv("DB_USERNAME"))
+                .applySetting("hibernate.connection.password", System.getenv("DB_PASSWORD"))
+                .applySetting("hibernate.connection.url",System.getenv("DB_LOCATION_LABORATORIO"))
                 .build();
         try {
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
