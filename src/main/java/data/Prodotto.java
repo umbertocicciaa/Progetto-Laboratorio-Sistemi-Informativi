@@ -134,7 +134,7 @@ public class Prodotto implements Serializable {
 
     @Override
     public String toString() {
-        return "data.Prodotto[ codProdotto=" + codProdotto + " ]";
+        return codProdotto.toString();
     }
     
 }

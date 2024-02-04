@@ -140,7 +140,7 @@ public class Automezzo implements Serializable {
 
     @Override
     public String toString() {
-        return "data.Automezzo[ targa=" + targa + " ]";
+        return targa;
     }
     
 }
