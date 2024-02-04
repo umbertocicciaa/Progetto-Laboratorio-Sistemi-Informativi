@@ -4,6 +4,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import static ui.UIUtil.erroreCaricamentoDatabase;
+
 /**
  * @author umbertodomenicociccia
  */
@@ -22,6 +25,7 @@ public enum HibernateSingleton {
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Exception e) {
             StandardServiceRegistryBuilder.destroy(registry);
+            erroreCaricamentoDatabase();
         }
     }
     public SessionFactory getSessionFactory() {

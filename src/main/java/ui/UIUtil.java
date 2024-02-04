@@ -20,6 +20,14 @@ import java.util.Objects;
  * @author umbertodomenicociccia
  */
 public final class UIUtil {
+
+    public static void erroreCaricamentoDatabase(){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText("Errore!");
+        errorAlert.setContentText("Errore nel caricamento del database");
+        errorAlert.showAndWait();
+    }
+
     public static Stage loadUiInsert(FXMLLoader loader, String title, int x, int y) throws IOException {
         Stage dialogStage = new Stage();
         Parent root = loader.load();
