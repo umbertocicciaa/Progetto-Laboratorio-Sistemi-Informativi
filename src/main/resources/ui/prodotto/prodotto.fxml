@@ -4,30 +4,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ui.acquisti.prodotto.ProdottoController">
-    <TreeView fx:id="homeTreeView" onMouseClicked="#selectItem" prefHeight="400.0" prefWidth="180.0"
-              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-    <TextField fx:id="ricercaProdotto" layoutX="200.0" layoutY="40.0" onAction="#searchProdotto" prefHeight="26.0"
-               prefWidth="370.0" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="10.0"
-               AnchorPane.topAnchor="40.0"/>
-    <Label layoutX="200.0" layoutY="14.0" text="Ricerca Prodotto" AnchorPane.leftAnchor="190.0"
-           AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.acquisti.prodotto.ProdottoController">
+    <TreeView fx:id="homeTreeView" onMouseClicked="#selectItem" prefHeight="400.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    <TextField fx:id="ricercaProdotto" layoutX="200.0" layoutY="40.0" onAction="#searchProdotto" prefHeight="26.0" prefWidth="370.0" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0" />
+    <Label layoutX="200.0" layoutY="14.0" text="Ricerca Prodotto" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <font>
-            <Font size="18.0"/>
+            <Font size="18.0" />
         </font>
     </Label>
-    <Button  layoutX="442.0" layoutY="73.0" mnemonicParsing="false" onAction="#addAction"
-            text="Aggiungi Prodotto" AnchorPane.leftAnchor="442.0"/>
-    <ChoiceBox fx:id="choiceItem" layoutX="200.0" layoutY="113.0" prefWidth="150.0" AnchorPane.leftAnchor="200.0"/>
+    <Button layoutX="442.0" layoutY="73.0" mnemonicParsing="false" onAction="#addAction" text="Aggiungi Prodotto" AnchorPane.leftAnchor="442.0" AnchorPane.rightAnchor="12.0" />
+    <ChoiceBox fx:id="choiceItem" layoutX="200.0" layoutY="113.0" prefWidth="150.0" AnchorPane.leftAnchor="200.0" />
     <Label layoutX="200.0" layoutY="86.0" text="Criterio ricerca">
         <font>
-            <Font size="18.0"/>
+            <Font size="18.0" />
         </font>
     </Label>
-    <TableView fx:id="tableView" layoutX="200.0" layoutY="154.0" prefHeight="200.0" prefWidth="360.0"
-               AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="10.0"
-               AnchorPane.topAnchor="154.0">
+    <TableView fx:id="tableView" layoutX="200.0" layoutY="154.0" prefHeight="200.0" prefWidth="360.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="154.0">
         <columns>
             <TableColumn fx:id="codice" prefWidth="121.0" text="Codice">
             </TableColumn>
@@ -37,8 +29,6 @@
             </TableColumn>
         </columns>
     </TableView>
-    <Button layoutX="442.0" layoutY="96.0" mnemonicParsing="false" onAction="#updateProdotto" prefHeight="26.0"
-            prefWidth="118.0" text="Modifica Prodotto" AnchorPane.leftAnchor="442.0"/>
-    <Button layoutX="442.0" layoutY="122.0" mnemonicParsing="false" onAction="#deleteProdotto" prefHeight="23.0"
-            prefWidth="118.0" text="Elimina Prodotto" AnchorPane.leftAnchor="442.0"/>
+    <Button layoutX="442.0" layoutY="96.0" mnemonicParsing="false" onAction="#updateProdotto" prefHeight="26.0" prefWidth="118.0" text="Modifica Prodotto" AnchorPane.leftAnchor="442.0" AnchorPane.rightAnchor="12.0" />
+    <Button layoutX="442.0" layoutY="122.0" mnemonicParsing="false" onAction="#deleteProdotto" prefHeight="23.0" prefWidth="118.0" text="Elimina Prodotto" AnchorPane.leftAnchor="442.0" AnchorPane.rightAnchor="12.0" />
 </AnchorPane>
