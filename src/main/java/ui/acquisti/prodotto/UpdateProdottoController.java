@@ -5,7 +5,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import org.hibernate.HibernateException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,30 +26,28 @@ public class UpdateProdottoController implements Initializable {
         String tipo = tipoField.getText();
         String quantita = quantitaField.getText();
 
-        if (stringheVerificatePossibileEmpty(tipo, quantita)) {
-            try {
-                int numero = quantita.isEmpty() ? 0 : Integer.parseInt(quantita);
-                if (numero < 0) {
-                    messaggioParametriScorretti();
-                    return;
-                }
-
-                if (tipo.isEmpty() && quantita.isEmpty()) {
-                    messaggioParametriScorretti();
-                    return;
-                }
-                getGestioneAcquisti().updateProdotto(codice, tipo.isEmpty() ? null : tipo, quantita.isEmpty() ? null : numero);
-            } catch (NumberFormatException ex) {
+        if (!stringheVerificatePossibileEmpty(tipo, quantita)) {
+            messaggioParametriScorretti();
+            return;
+        }
+        try {
+            int numero = quantita.isEmpty() ? 0 : Integer.parseInt(quantita);
+            if (numero < 0) {
                 messaggioParametriScorretti();
-            } catch (HibernateException ex) {
-                ex.printStackTrace();
+                return;
             }
-        } else {
+            if (tipo.isEmpty() && quantita.isEmpty()) {
+                messaggioParametriScorretti();
+                return;
+            }
+            getGestioneAcquisti().updateProdotto(codice, tipo.isEmpty() ? null : tipo, quantita.isEmpty() ? null : numero);
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close();
+        } catch (NumberFormatException ex) {
             messaggioParametriScorretti();
         }
 
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
+
     }
 
     public void handleCancelButton() {
