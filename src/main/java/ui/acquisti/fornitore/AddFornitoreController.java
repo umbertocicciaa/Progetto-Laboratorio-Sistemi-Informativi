@@ -5,13 +5,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import org.hibernate.HibernateException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
-import static ui.UIUtil.messaggioErroreInserimento;
 import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificate;
 
@@ -40,26 +38,12 @@ public class AddFornitoreController implements Initializable {
         String citta = cittaField.getText();
 
         if (stringheVerificate(piva, nome, citta)) {
-            boolean inserito = addFornitore(piva, nome, citta);
-            if (!inserito) {
-                messaggioErroreInserimento("Fornitore");
-            }
-        } else {
-            messaggioParametriScorretti();
-        }
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
-    }
-
-    private boolean addFornitore(String piva, String nome, String citta) {
-        try {
             getGestioneAcquisti().addFornitore(piva, nome, citta);
-            return true;
-        } catch (HibernateException ex) {
-            return false;
-        }
-    }
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close();
+        }else messaggioParametriScorretti();
 
+    }
 
     public void handleCancelButton() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();

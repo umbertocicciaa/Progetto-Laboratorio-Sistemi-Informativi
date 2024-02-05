@@ -36,9 +36,12 @@ public class UpdateFornitoreController implements Initializable {
                 return;
             }
             getGestioneAcquisti().updateFornitore(piva, nome.isEmpty() ? null : nome, citta.isEmpty() ? null : citta);
-        }
-        Stage stage = (Stage) okButton.getScene().getWindow();
-        stage.close();
+            Stage stage = (Stage) okButton.getScene().getWindow();
+            stage.close();
+        }else
+            messaggioParametriScorretti();
+
+
     }
 
     public void initPiva(String piva) {
