@@ -278,12 +278,15 @@ public interface GestioneAcquisti {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Ordine ordine;
-            if (automezzo == null)
-                ordine = new Ordine(codice, stato, data, quantita, null, session.get(Prodotto.class, prodotto));
-            else if (prodotto < 0) {
-                ordine = new Ordine(codice, stato, data, quantita, session.get(Automezzo.class, automezzo), null);
-            } else
+            if ((automezzo == null || automezzo.isEmpty()) && prodotto <= 0)
+                session.getTransaction().commit();
+            if ((automezzo != null && !automezzo.isEmpty()) && prodotto > 0)
                 ordine = new Ordine(codice, stato, data, quantita, session.get(Automezzo.class, automezzo), session.get(Prodotto.class, prodotto));
+            else if (automezzo != null && automezzo.isEmpty())
+                ordine = new Ordine(codice, stato, data, quantita, null, session.get(Prodotto.class, prodotto));
+            else {
+                ordine = new Ordine(codice, stato, data, quantita, session.get(Automezzo.class, automezzo), null);
+            }
             session.persist(ordine);
             session.getTransaction().commit();
         } catch (HibernateException exception) {
