@@ -42,36 +42,37 @@ public class UpdateOrdineController implements Initializable {
         String stato = statoField.getText();
         String quantita = quantitaField.getText();
 
-        if (stringheVerificatePossibileEmpty(stato)) {
-            try {
-                Date date = null;
-                if (dataField.getValue() != null)
-                    date = convertLocalDateToDate(dataField.getValue());
-                if (!isStatoValido(stato)) {
-                    messaggioParametriScorretti();
-                    return;
-                }
-                int numero = quantita.isEmpty() ? 0 : Integer.parseInt(quantita);
-                if (numero < 0) {
-                    messaggioParametriScorretti();
-                    return;
-                }
-                if (stato.isEmpty() && quantita.isEmpty() && date==null) {
-                    messaggioParametriScorretti();
-                    return;
-                }
-                getGestioneAcquisti().updateOrdine(ordine, stato.isEmpty() || !isStatoValido(stato) ? null : stato, date, quantita.isEmpty() ? -1 : numero);
-            } catch (NumberFormatException ex) {
+        if (!stringheVerificatePossibileEmpty(stato)) {
+            messaggioParametriScorretti();
+            return;
+        }
+        try {
+            Date date = null;
+            if (dataField.getValue() != null)
+                date = convertLocalDateToDate(dataField.getValue());
+            if (!statoValido(stato)) {
                 messaggioParametriScorretti();
+                return;
             }
-        } else {
+            int numero = quantita.isEmpty() ? 0 : Integer.parseInt(quantita);
+            if (numero < 0) {
+                messaggioParametriScorretti();
+                return;
+            }
+            if (stato.isEmpty() && quantita.isEmpty() && date == null) {
+                messaggioParametriScorretti();
+                return;
+            }
+            getGestioneAcquisti().updateOrdine(ordine, stato.isEmpty() || !statoValido(stato) ? null : stato, date, quantita.isEmpty() ? -1 : numero);
+            Stage stage = (Stage) cancel.getScene().getWindow();
+            stage.close();
+        } catch (NumberFormatException ex) {
             messaggioParametriScorretti();
         }
-        Stage stage = (Stage) cancel.getScene().getWindow();
-        stage.close();
+
     }
 
-    private boolean isStatoValido(String stato) {
+    private boolean statoValido(String stato) {
         return "lavorazione".equalsIgnoreCase(stato) || "chiuso".equalsIgnoreCase(stato) || "aperto".equalsIgnoreCase(stato);
     }
 
