@@ -37,12 +37,13 @@ public class AddFornitoreController implements Initializable {
         String nome = nomeField.getText();
         String citta = cittaField.getText();
 
-        if (stringheVerificate(piva, nome, citta)) {
-            getGestioneAcquisti().addFornitore(piva, nome, citta);
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.close();
-        }else messaggioParametriScorretti();
-
+        if (!stringheVerificate(piva, nome, citta)) {
+            messaggioParametriScorretti();
+            return;
+        }
+        getGestioneAcquisti().addFornitore(piva, nome, citta);
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 
     public void handleCancelButton() {
