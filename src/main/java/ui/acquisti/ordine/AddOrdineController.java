@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static logic.BusinessFacade.getGestioneAcquisti;
-import static ui.UIUtil.*;
+import static ui.UIUtil.messaggioParametriScorretti;
 import static ui.Util.stringheVerificate;
 import static ui.Util.stringheVerificatePossibileEmpty;
 
@@ -77,23 +77,21 @@ public class AddOrdineController implements Initializable {
         String automezzo = automezzoField.getText();
         LocalDate data = dataField.getValue();
 
-        if (!stringheVerificate(stato) || !stringheVerificatePossibileEmpty(prodotto, automezzo) || !isStatoValido(stato) || !isValidoNumero(numero) || !isValidoNumero(quantita)) {
+        if (!stringheVerificate(stato) || !stringheVerificatePossibileEmpty(prodotto, automezzo) || !isStatoValido(stato) || !isNumeroValido(numero) || !isNumeroValido(quantita)) {
             messaggioParametriScorretti();
             return;
         }
-
-        try {
-            int nume = Integer.parseInt(numero);
-            int quantit = Integer.parseInt(quantita);
-            Date date = convertLocalDateToDate(data);
-            int prod = Integer.parseInt(prodotto);
-            getGestioneAcquisti().addOrdine(nume, stato, date, quantit, prod, automezzo);
-        } catch (NumberFormatException ex) {
-            messaggioErroreInserimentoNumero();
+        if(prodotto.isEmpty() && automezzo.isEmpty() ){
+            messaggioParametriScorretti();
+            return;
         }
+        int nume = Integer.parseInt(numero);
+        int quantit = Integer.parseInt(quantita);
+        Date date = convertLocalDateToDate(data);
+        int prod = !prodotto.isEmpty() ? Integer.parseInt(prodotto) : 0;
+        getGestioneAcquisti().addOrdine(nume, stato, date, quantit, prod, automezzo);
         Stage stage = (Stage) cancel.getScene().getWindow();
         stage.close();
-
     }
 
     private Date convertLocalDateToDate(LocalDate data) {
@@ -105,10 +103,10 @@ public class AddOrdineController implements Initializable {
         return "lavorazione".equalsIgnoreCase(stato) || "chiuso".equalsIgnoreCase(stato) || "aperto".equalsIgnoreCase(stato);
     }
 
-    private boolean isValidoNumero(String numero) {
+    private boolean isNumeroValido(String numero) {
         try {
-           Integer.parseInt(numero);
-            return true;
+            int num = Integer.parseInt(numero);
+            return num > 0;
         } catch (NumberFormatException excp) {
             return false;
         }
